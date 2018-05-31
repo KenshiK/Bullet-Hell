@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - BulletResetter
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -15,8 +16,8 @@ TagManager:
   - 
   - 
   - BulletResetter
-  - 
-  - 
+  - Player
+  - Enemy
   - 
   - 
   - 
