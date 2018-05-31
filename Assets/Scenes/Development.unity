@@ -202,7 +202,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4537836624055512, guid: b8507ee07416c5848a0823d3d53d561b, type: 2}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b8507ee07416c5848a0823d3d53d561b, type: 2}
@@ -286,7 +286,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4596534253847214, guid: 896be5dfb594c7649a38ea0da7ca55a8, type: 2}
       propertyPath: m_RootOrder
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 896be5dfb594c7649a38ea0da7ca55a8, type: 2}
@@ -486,7 +486,7 @@ Transform:
   m_LocalScale: {x: 2.2172577, y: 0.9986525, z: 2.90619}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1153173679
 Prefab:
@@ -677,11 +677,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 114333528267328462, guid: 971280cbaa32f354fbb77c86f5af7f3d,
-        type: 2}
-      propertyPath: bulletPatterns.Array.size
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4229478855292502, guid: 971280cbaa32f354fbb77c86f5af7f3d, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -713,28 +708,6 @@ Prefab:
     - target: {fileID: 4229478855292502, guid: 971280cbaa32f354fbb77c86f5af7f3d, type: 2}
       propertyPath: m_RootOrder
       value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 114333528267328462, guid: 971280cbaa32f354fbb77c86f5af7f3d,
-        type: 2}
-      propertyPath: bulletPatterns.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: 41f7657e191364140862d7df77bb416c,
-        type: 2}
-    - target: {fileID: 114333528267328462, guid: 971280cbaa32f354fbb77c86f5af7f3d,
-        type: 2}
-      propertyPath: bulletPatterns.Array.data[1]
-      value: 
-      objectReference: {fileID: 11400000, guid: 9320ea6826b601a43bc4bccc3983bfdc,
-        type: 2}
-    - target: {fileID: 114333528267328462, guid: 971280cbaa32f354fbb77c86f5af7f3d,
-        type: 2}
-      propertyPath: patternDuration
-      value: 120
-      objectReference: {fileID: 0}
-    - target: {fileID: 114333528267328462, guid: 971280cbaa32f354fbb77c86f5af7f3d,
-        type: 2}
-      propertyPath: patternTimeInterval
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 971280cbaa32f354fbb77c86f5af7f3d, type: 2}

@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour {
 
-    private Rigidbody rigidbody;
+    private Rigidbody rb;
     private void Start()
     {
-        rigidbody = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
     }
 
     private void ReturnToPool()
     {
-        rigidbody.velocity = Vector3.zero;
+        rb.velocity = Vector3.zero;
         transform.position = transform.parent.position;
         gameObject.SetActive(false);
     }
