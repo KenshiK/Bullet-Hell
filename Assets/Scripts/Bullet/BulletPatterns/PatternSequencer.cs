@@ -49,9 +49,13 @@ public class PatternSequencer : MonoBehaviour {
     {
         firing = true;
         int frameCounter = 0;
-        
+        float origin = 0;
         while(frameCounter < patternDuration || patternDuration == 0)
         {
+            if(pattern.spinSpeed > 0)
+            {
+                origin += +pattern.origin + Mathf.Rad2Deg * Mathf.Sin(frameCounter * pattern.spinSpeed);
+            }
             int fireRate = pattern.fireRate == 0 ? 1 : pattern.fireRate;
             if (frameCounter % fireRate == 0)
             {
@@ -62,8 +66,7 @@ public class PatternSequencer : MonoBehaviour {
                     float arrayAngle = pattern.bulletArrays.Count > 2 ? pattern.arraySpread / (pattern.bulletArrays.Count - 1) : pattern.arraySpread;
                     for (int j = 0; j < pattern.bulletsPerArray; ++j)
                     {
-                        float firingAngle = pattern.origin + i * arrayAngle + j * bulletAngle;
-
+                        float firingAngle = origin + i * arrayAngle + j * bulletAngle;
                         GameObject bullet = bulletPool.SpawnFromPool(tag, transform.position, Quaternion.identity);
                         Vector3 force = ComputeForce(firingAngle, pattern.bulletSpeed);
                         bullet.GetComponent<Rigidbody>().velocity = force;
@@ -81,11 +84,12 @@ public class PatternSequencer : MonoBehaviour {
         firing = false;
     }
 
+    
     private Vector3 ComputeForce(float angle, float speed)
     {
         float tempSpeed = Player ? speed : -speed;
         Vector3 force = Vector3.zero;
-        float radAngle = angle * Mathf.PI / 180;
+        float radAngle = Mathf.Deg2Rad * angle;
         force = new Vector3(Mathf.Cos(radAngle) , 0, Mathf.Sin(radAngle) ) * tempSpeed ;
         return force;
     }

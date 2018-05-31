@@ -723,6 +723,11 @@ Prefab:
       value: 
       objectReference: {fileID: 11400000, guid: 9320ea6826b601a43bc4bccc3983bfdc,
         type: 2}
+    - target: {fileID: 114333528267328462, guid: 971280cbaa32f354fbb77c86f5af7f3d,
+        type: 2}
+      propertyPath: patternTimeInterval
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 971280cbaa32f354fbb77c86f5af7f3d, type: 2}
   m_IsPrefabParent: 0
