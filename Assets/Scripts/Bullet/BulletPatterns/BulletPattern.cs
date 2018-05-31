@@ -6,6 +6,7 @@ using UnityEngine;
 public class BulletPattern : ScriptableObject {
 
     [Header("Global Settings")]
+    public float timeToLive;
     public List<BulletArray> bulletArrays;
     public int bulletsPerArray;
     public float arrayBulletSpread;
@@ -16,6 +17,7 @@ public class BulletPattern : ScriptableObject {
     public float spinSpeed;
     public bool speedChange;
     public bool spinReversal;
+    public float timeToLerp;
     public float maxSpinSpeed;
 
     [Header("Bullet Settings")]

@@ -37,7 +37,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1701207077707412}
   m_LocalRotation: {x: -0, y: -0, z: -0.67641604, w: 0.73651975}
-  m_LocalPosition: {x: 1.15, y: 0.1, z: 2.77}
+  m_LocalPosition: {x: 10.05, y: 0.1, z: -11.45}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -101,7 +101,7 @@ MonoBehaviour:
     prefab: {fileID: 1284042668346916, guid: 2eadf3171d36daa40a530e98b7a37d44, type: 2}
     size: 300
   - tag: NoMat
-    prefab: {fileID: 1371917382116516, guid: 2aac92223e6845e4a9c0831c78d51f84, type: 2}
+    prefab: {fileID: 1988164011393854, guid: 092ec5f26abdde14b938d5f3e23e86c7, type: 2}
     size: 300
 --- !u!135 &135741162946773578
 SphereCollider:

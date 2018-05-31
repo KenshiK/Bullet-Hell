@@ -178,9 +178,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPatterns:
   - {fileID: 11400000, guid: 41f7657e191364140862d7df77bb416c, type: 2}
-  patternDuration: 0
   patternTimeInterval: 0
   Player: 1
+  sequencerReverseSpin: 0
+  randomize: 0
 --- !u!1001 &698695781
 Prefab:
   m_ObjectHideFlags: 0
@@ -721,7 +722,13 @@ Prefab:
         type: 2}
       propertyPath: bulletPatterns.Array.data[1]
       value: 
-      objectReference: {fileID: 11400000, guid: 9320ea6826b601a43bc4bccc3983bfdc,
+      objectReference: {fileID: 11400000, guid: 41f7657e191364140862d7df77bb416c,
+        type: 2}
+    - target: {fileID: 114333528267328462, guid: 971280cbaa32f354fbb77c86f5af7f3d,
+        type: 2}
+      propertyPath: bulletPatterns.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 41f7657e191364140862d7df77bb416c,
         type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 971280cbaa32f354fbb77c86f5af7f3d, type: 2}

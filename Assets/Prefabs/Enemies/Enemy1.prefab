@@ -113,22 +113,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 3.365516, y: 0.84261847, z: 3.285402}
   m_Center: {x: 0.0000013709075, y: 0.122621834, z: -0.17548193}
---- !u!114 &114333528267328462
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1390912162019256}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0c9e467711d1cc43ac060d51936fbb3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bulletPatterns:
-  - {fileID: 11400000, guid: 41f7657e191364140862d7df77bb416c, type: 2}
-  patternDuration: 120
-  patternTimeInterval: 1
-  Player: 0
 --- !u!114 &114434873801172814
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -140,3 +124,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7281a9191a1c3a94d9fb5c7958b8b4c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+=======
+  - {fileID: 11400000, guid: 9320ea6826b601a43bc4bccc3983bfdc, type: 2}
+  patternTimeInterval: 0
+  Player: 0
+  sequencerReverseSpin: 0
+  randomize: 0
