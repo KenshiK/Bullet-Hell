@@ -6,6 +6,7 @@ using UnityEngine;
 public class BulletPattern : ScriptableObject {
 
     [Header("Global Settings")]
+    public float timeToLive;
     public List<BulletArray> bulletArrays;
     public int bulletsPerArray;
     public float arrayBulletSpread;

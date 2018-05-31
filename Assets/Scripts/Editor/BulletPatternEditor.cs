@@ -23,6 +23,7 @@ public class BulletPatternEditor : Editor {
         speedChange = m_Object.FindProperty("speedChange");
         spinReversal = m_Object.FindProperty("spinReversal");
 
+        positiveProperties.Add("timeToLive", m_Object.FindProperty("timeToLive"));
         positiveProperties.Add("bulletsPerArray", m_Object.FindProperty("bulletsPerArray"));
         positiveProperties.Add("origin", m_Object.FindProperty("origin"));
         positiveProperties.Add("arrayBulletSpread", m_Object.FindProperty("arrayBulletSpread"));
@@ -37,6 +38,8 @@ public class BulletPatternEditor : Editor {
     public override void OnInspectorGUI()
     {
         m_Object.Update();
+
+        EditorGUILayout.PropertyField(positiveProperties["timeToLive"]);
 
         GUILayout.Label("Bullet Pattern Creator", EditorStyles.boldLabel);
         EditorList.Show(bulletArrays);

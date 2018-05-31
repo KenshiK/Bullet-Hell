@@ -5,7 +5,6 @@ using UnityEngine;
 public class PatternSequencer : MonoBehaviour {
 
     [SerializeField] List<BulletPattern> bulletPatterns;
-    [SerializeField] private float patternDuration;
     [Range(0, 10)] public float patternTimeInterval;
     [SerializeField] private bool Player = false;
 
@@ -48,47 +47,52 @@ public class PatternSequencer : MonoBehaviour {
     {
         firing = true;
         int frameCounter = 0;
+        float timer = 0f;
         float origin = 0;
-        float frameReference = 0;
+        float timeReference = 0;
         bool speedUp = true;
         bool reversal = false;
         int cycles = 0;
-        while(frameCounter < patternDuration || patternDuration == 0)
+        while(timer < pattern.timeToLive || pattern.timeToLive == 0)
         {
             float rate = 1f / pattern.timeToLerp;
             float speed = pattern.spinSpeed ;
+            timeReference += rate * Time.deltaTime;
+
+            #region Speed setup
             if (pattern.speedChange && pattern.timeToLerp > 0)
             {
                 float diff = pattern.maxSpinSpeed - pattern.spinSpeed;
-                frameReference += rate * Time.deltaTime;
-                if(frameReference > 1)
+                
+                if(timeReference > 1)
                 {
-                    frameReference = 0;
+                    timeReference = 0;
                     speedUp = !speedUp;
                     cycles++;
+                    //reverse every two cycle
                     if (pattern.spinReversal && cycles % 2 == 0 && cycles > 0)
                     {
                         reversal = !reversal;
                     }
-
                 }
+
                 if (speedUp)
                 {
-                    speed = Easing.Sinusoidal.InOut(frameReference, pattern.spinSpeed, diff , 1);
+                    speed = Easing.Sinusoidal.InOut(timeReference, pattern.spinSpeed, diff , 1);
                 }
                 else
                 {
-                    speed = Easing.Sinusoidal.InOut(frameReference, pattern.maxSpinSpeed, -diff, 1);
+                    speed = Easing.Sinusoidal.InOut(timeReference, pattern.maxSpinSpeed, -diff, 1);
                 }
-
                 
                 if (reversal)
                 {
                     speed = -speed;
                 }
             }
-            Debug.Log(speed);
+            #endregion
 
+            #region Position setup
             origin = pattern.spinSpeed > 0f ? origin + (float)(pattern.origin + speed * Time.deltaTime) : (float)(pattern.origin + speed * Time.deltaTime);
             int fireRate = pattern.fireRate == 0 ? 1 : pattern.fireRate;
             if (frameCounter % fireRate == 0)
@@ -111,17 +115,19 @@ public class PatternSequencer : MonoBehaviour {
                     }
                 }
             }
+            #endregion
 
             if (!pauseSequencing)
             {
                 frameCounter++;
+                timer += Time.deltaTime;
             }
             yield return null;
         }
         yield return new WaitForSeconds(patternTimeInterval);
         firing = false;
     }
-    
+
     private Vector3 ComputeForce(float angle, float speed)
     {
         float tempSpeed = Player ? speed : -speed;
