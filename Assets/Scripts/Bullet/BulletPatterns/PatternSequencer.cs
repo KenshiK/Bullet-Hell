@@ -64,7 +64,7 @@ public class PatternSequencer : MonoBehaviour {
                     {
                         float firingAngle = pattern.origin + i * arrayAngle + j * bulletAngle;
 
-                        GameObject bullet = bulletPool.SpawnFromPool(tag, transform.position, Quaternion.identity);
+                        GameObject bullet = bulletPool.SpawnFromPool(tag, transform.position, Quaternion.identity, gameObject.tag);
                         Vector3 force = ComputeForce(firingAngle, pattern.bulletSpeed);
                         bullet.GetComponent<Rigidbody>().velocity = force;
                     }

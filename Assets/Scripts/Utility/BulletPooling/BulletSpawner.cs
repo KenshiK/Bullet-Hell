@@ -12,7 +12,7 @@ public class BulletSpawner : MonoBehaviour {
     }
     private void FixedUpdate()
     {
-        GameObject obj = bulletPooler.SpawnFromPool("Bullet", transform.position, Quaternion.identity);
+        GameObject obj = bulletPooler.SpawnFromPool("Bullet", transform.position, Quaternion.identity, gameObject.tag);
         float xForce = Random.Range(-.1f, .1f);
         float yForce = Random.Range(0.5f, 1f);
         float zForce = Random.Range(-.1f, .1f);

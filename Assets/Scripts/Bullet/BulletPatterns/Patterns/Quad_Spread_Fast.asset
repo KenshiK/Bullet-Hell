@@ -9,21 +9,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 069ae646abb781a41bdaa8a5ca100fdf, type: 3}
-  m_Name: Simple_Slow
+  m_Name: Simple_Fast
   m_EditorClassIdentifier: 
   bulletArrays:
   - bulletTags:
     - Bullet
-    bulletTypeDuration: 1
+    - NoMat
+    bulletTypeDuration: 30
   - bulletTags:
     - NoMat
-    bulletTypeDuration: 2
-  bulletsPerArray: 1
-  arrayBulletSpread: 0
-  arraySpread: 0
+    - Bullet
+    bulletTypeDuration: 30
+  bulletsPerArray: 2
+  arrayBulletSpread: 35
+  arraySpread: 60
+  origin: 45
   spinSpeed: 0
   speedChange: 0
   spinReversal: 0
   maxSpinSpeed: 0
-  fireRate: 40
-  bulletSpeed: 3
+  fireRate: 10
+  bulletSpeed: 6

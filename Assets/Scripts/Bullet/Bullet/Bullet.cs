@@ -5,6 +5,17 @@ using UnityEngine;
 public class Bullet : MonoBehaviour {
 
     private Rigidbody rb;
+    private string parent = "";
+
+    public string Parent
+    {
+        get { return parent; }
+        set {
+            if (parent == "")
+                parent = value;
+        }
+    }
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -22,6 +33,11 @@ public class Bullet : MonoBehaviour {
         {
             ReturnToPool();
         }
-            
+        else if ( !other.tag.Equals(Parent) && (other.tag.Equals("Player") || other.tag.Equals("Enemy")) )
+        {
+            other.GetComponent<Spaceship>().ApplyDamage();
+            ReturnToPool();
+        }
+
     }
 }

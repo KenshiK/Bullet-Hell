@@ -6,6 +6,7 @@ public class BulletPool : MonoBehaviour {
 
     public List<Pool> pools;
     public Dictionary<string, Queue<GameObject>> poolDictionnary;
+
     #region Singleton
     public static BulletPool Instance;
     public void Awake()
@@ -38,7 +39,7 @@ public class BulletPool : MonoBehaviour {
         } 
     }
 
-    public GameObject SpawnFromPool(string tag, Vector3 position, Quaternion rotation)
+    public GameObject SpawnFromPool(string tag, Vector3 position, Quaternion rotation, string parentTag)
     {
         if (!poolDictionnary.ContainsKey(tag))
         {
@@ -51,6 +52,7 @@ public class BulletPool : MonoBehaviour {
         obj.transform.position = position;
         obj.transform.rotation = rotation;
         obj.SetActive(true);
+        obj.GetComponent<Bullet>().Parent = parentTag;
 
         poolDictionnary[tag].Enqueue(obj);
 
