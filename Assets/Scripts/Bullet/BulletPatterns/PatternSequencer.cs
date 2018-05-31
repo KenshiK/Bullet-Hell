@@ -8,6 +8,7 @@ public class PatternSequencer : MonoBehaviour {
     [SerializeField] List<BulletPattern> bulletPatterns;
     [SerializeField] private float patternDuration;
     [Range(0, 10)] public float patternTimeInterval;
+    [SerializeField] private bool Player = false;
 
     private BulletPool bulletPool;
     private bool randomize = false;
@@ -59,7 +60,11 @@ public class PatternSequencer : MonoBehaviour {
                     string tag = GetCurrentBulletTag(ba, frameCounter);
                     
                     GameObject bullet = bulletPool.SpawnFromPool(tag, transform.position, Quaternion.identity);
-                    Vector3 force = new Vector3(0f, 0f, -pattern.bulletSpeed);
+                    Vector3 force;
+                    if (Player)
+                        force = new Vector3(0f, 0f, pattern.bulletSpeed);
+                    else
+                        force = new Vector3(0f, 0f, -pattern.bulletSpeed);
 
                     bullet.GetComponent<Rigidbody>().AddForce(force, ForceMode.Impulse);
                 }

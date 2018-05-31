@@ -165,6 +165,22 @@ MeshCollider:
   m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300010, guid: add769d179a9826498fc063c005d35bd, type: 3}
+--- !u!114 &354084548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 354084541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0c9e467711d1cc43ac060d51936fbb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletPatterns:
+  - {fileID: 11400000, guid: 41f7657e191364140862d7df77bb416c, type: 2}
+  patternDuration: 0
+  patternTimeInterval: 0
+  Player: 1
 --- !u!1001 &698695781
 Prefab:
   m_ObjectHideFlags: 0
@@ -245,6 +261,22 @@ Prefab:
     - target: {fileID: 4148522960701714, guid: cfd453e0e5906d840ac830dec5ef0f3f, type: 2}
       propertyPath: m_RootOrder
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4979913883264926, guid: cfd453e0e5906d840ac830dec5ef0f3f, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4979913883264926, guid: cfd453e0e5906d840ac830dec5ef0f3f, type: 2}
+      propertyPath: m_LocalScale.z
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332568012517946, guid: cfd453e0e5906d840ac830dec5ef0f3f, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332568012517946, guid: cfd453e0e5906d840ac830dec5ef0f3f, type: 2}
+      propertyPath: m_LocalScale.z
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cfd453e0e5906d840ac830dec5ef0f3f, type: 2}
