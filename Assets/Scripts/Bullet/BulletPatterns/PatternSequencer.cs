@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PatternSequencer : MonoBehaviour {
 
-    
     [SerializeField] List<BulletPattern> bulletPatterns;
     [SerializeField] private float patternDuration;
     [Range(0, 10)] public float patternTimeInterval;
@@ -50,11 +49,51 @@ public class PatternSequencer : MonoBehaviour {
         firing = true;
         int frameCounter = 0;
         float origin = 0;
+        float frameReference = 0;
+        bool speedUp = false;
+        bool reversal = false;
+        int cycles = 0;
         while(frameCounter < patternDuration || patternDuration == 0)
         {
-            origin = (pattern.origin + pattern.spinSpeed * frameCounter) % 360;
-            
-            Debug.Log(origin);
+            float rate = 1f / pattern.timeToLerp;
+            float speed = pattern.spinSpeed ;
+            if (pattern.speedChange && pattern.timeToLerp > 0)
+            {
+                
+                frameReference += rate * Time.deltaTime;
+                if(frameReference > 1)
+                {
+                    frameReference = 0;
+                    speedUp = !speedUp;
+                    cycles++;
+                    
+                }
+                if (speedUp)
+                {
+                    speed = Easing.Sinusoidal.InOut(frameReference, pattern.spinSpeed, pattern.maxSpinSpeed-pattern.spinSpeed , 1);
+                    //speed = Mathf.Lerp(pattern.spinSpeed, pattern.maxSpinSpeed, frameReference);
+                }
+                else
+                {
+                    speed = Easing.Sinusoidal.InOut(frameReference, pattern.maxSpinSpeed, -(pattern.maxSpinSpeed - pattern.spinSpeed), 1);
+                    //speed = Mathf.Lerp(pattern.maxSpinSpeed, pattern.spinSpeed, frameReference);
+                }
+
+                
+
+                /*if (pattern.spinReversal && cycles % 2 == 0)
+                {
+                    reversal = !reversal;
+                }
+                if (reversal)
+                {
+                    speed = -speed;
+                }*/
+                //speed = speed * ((float)frameCounter % 360);
+            }
+            Debug.Log(speed);
+
+            origin = pattern.spinSpeed > 0f ? origin + (float)(pattern.origin + speed * Time.deltaTime) : (float)(pattern.origin + speed * Time.deltaTime);
             int fireRate = pattern.fireRate == 0 ? 1 : pattern.fireRate;
             if (frameCounter % fireRate == 0)
             {
@@ -67,8 +106,12 @@ public class PatternSequencer : MonoBehaviour {
                     {
                         float firingAngle = origin + i * arrayAngle + j * bulletAngle;
                         GameObject bullet = bulletPool.SpawnFromPool(tag, transform.position, Quaternion.identity);
-                        Vector3 force = ComputeForce(firingAngle, pattern.bulletSpeed);
-                        bullet.GetComponent<Rigidbody>().velocity = force;
+                        if(bullet != null)
+                        {
+                            Vector3 force = ComputeForce(firingAngle, pattern.bulletSpeed);
+                            bullet.GetComponent<Rigidbody>().velocity = force;
+                        }
+                        
                     }
                 }
             }
@@ -76,17 +119,12 @@ public class PatternSequencer : MonoBehaviour {
             if (!pauseSequencing)
             {
                 frameCounter++;
-                if (pattern.spinSpeed > 0)
-                {
-                    origin += pattern.spinSpeed;
-                }
             }
             yield return null;
         }
         yield return new WaitForSeconds(patternTimeInterval);
         firing = false;
     }
-
     
     private Vector3 ComputeForce(float angle, float speed)
     {

@@ -16,6 +16,7 @@ public class BulletPattern : ScriptableObject {
     public float spinSpeed;
     public bool speedChange;
     public bool spinReversal;
+    public float timeToLerp;
     public float maxSpinSpeed;
 
     [Header("Bullet Settings")]

@@ -99,11 +99,10 @@ public class Easing {
             return Mathf.Sin(k * Mathf.PI / 2f);
         }
 
-        public static float InOut(float k)
-        {
-            return 0.5f * (1f - Mathf.Cos(Mathf.PI * k));
+        public static float InOut(float t, float b, float c, float d) {
+	        return -c/2 * (Mathf.Cos(Mathf.PI* t/d) - 1) + b;
         }
-    };
+    }
 
     public class Exponential
     {

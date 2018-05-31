@@ -28,6 +28,7 @@ public class BulletPatternEditor : Editor {
         positiveProperties.Add("arrayBulletSpread", m_Object.FindProperty("arrayBulletSpread"));
         positiveProperties.Add("arraySpread", m_Object.FindProperty("arraySpread"));
         positiveProperties.Add("spinSpeed",m_Object.FindProperty("spinSpeed"));
+        positiveProperties.Add("timeToLerp", m_Object.FindProperty("timeToLerp"));
         positiveProperties.Add("maxSpinSpeed", m_Object.FindProperty("maxSpinSpeed"));
         positiveProperties.Add("fireRate", m_Object.FindProperty("fireRate"));
         positiveProperties.Add("bulletSpeed", m_Object.FindProperty("bulletSpeed"));
@@ -56,6 +57,7 @@ public class BulletPatternEditor : Editor {
         if(speedChange.boolValue == true)
         {
             EditorGUILayout.PropertyField(spinReversal);
+            EditorGUILayout.PropertyField(positiveProperties["timeToLerp"]);
             EditorGUILayout.PropertyField(positiveProperties["maxSpinSpeed"]);
         }
         
