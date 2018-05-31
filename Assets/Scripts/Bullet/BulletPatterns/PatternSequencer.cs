@@ -50,7 +50,7 @@ public class PatternSequencer : MonoBehaviour {
         int frameCounter = 0;
         float origin = 0;
         float frameReference = 0;
-        bool speedUp = false;
+        bool speedUp = true;
         bool reversal = false;
         int cycles = 0;
         while(frameCounter < patternDuration || patternDuration == 0)
@@ -59,37 +59,33 @@ public class PatternSequencer : MonoBehaviour {
             float speed = pattern.spinSpeed ;
             if (pattern.speedChange && pattern.timeToLerp > 0)
             {
-                
+                float diff = pattern.maxSpinSpeed - pattern.spinSpeed;
                 frameReference += rate * Time.deltaTime;
                 if(frameReference > 1)
                 {
                     frameReference = 0;
                     speedUp = !speedUp;
                     cycles++;
-                    
+                    if (pattern.spinReversal && cycles % 2 == 0 && cycles > 0)
+                    {
+                        reversal = !reversal;
+                    }
+
                 }
                 if (speedUp)
                 {
-                    speed = Easing.Sinusoidal.InOut(frameReference, pattern.spinSpeed, pattern.maxSpinSpeed-pattern.spinSpeed , 1);
-                    //speed = Mathf.Lerp(pattern.spinSpeed, pattern.maxSpinSpeed, frameReference);
+                    speed = Easing.Sinusoidal.InOut(frameReference, pattern.spinSpeed, diff , 1);
                 }
                 else
                 {
-                    speed = Easing.Sinusoidal.InOut(frameReference, pattern.maxSpinSpeed, -(pattern.maxSpinSpeed - pattern.spinSpeed), 1);
-                    //speed = Mathf.Lerp(pattern.maxSpinSpeed, pattern.spinSpeed, frameReference);
+                    speed = Easing.Sinusoidal.InOut(frameReference, pattern.maxSpinSpeed, -diff, 1);
                 }
 
                 
-
-                /*if (pattern.spinReversal && cycles % 2 == 0)
-                {
-                    reversal = !reversal;
-                }
                 if (reversal)
                 {
                     speed = -speed;
-                }*/
-                //speed = speed * ((float)frameCounter % 360);
+                }
             }
             Debug.Log(speed);
 
