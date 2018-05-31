@@ -16,17 +16,13 @@ MonoBehaviour:
     - Bullet
     - NoMat
     bulletTypeDuration: 30
-  - bulletTags:
-    - NoMat
-    - Bullet
-    bulletTypeDuration: 30
-  bulletsPerArray: 2
-  arrayBulletSpread: 80
-  arraySpread: 176
-  origin: 75
-  spinSpeed: 10
+  bulletsPerArray: 10
+  arrayBulletSpread: 360
+  arraySpread: 0
+  origin: 0
+  spinSpeed: 0
   speedChange: 0
   spinReversal: 0
-  maxSpinSpeed: 100
+  maxSpinSpeed: 1891
   fireRate: 5
   bulletSpeed: 6

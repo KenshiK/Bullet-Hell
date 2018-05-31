@@ -52,10 +52,9 @@ public class PatternSequencer : MonoBehaviour {
         float origin = 0;
         while(frameCounter < patternDuration || patternDuration == 0)
         {
-            if(pattern.spinSpeed > 0)
-            {
-                origin += +pattern.origin + Mathf.Rad2Deg * Mathf.Sin(frameCounter * pattern.spinSpeed);
-            }
+            origin = (pattern.origin + pattern.spinSpeed * frameCounter) % 360;
+            
+            Debug.Log(origin);
             int fireRate = pattern.fireRate == 0 ? 1 : pattern.fireRate;
             if (frameCounter % fireRate == 0)
             {
@@ -77,6 +76,10 @@ public class PatternSequencer : MonoBehaviour {
             if (!pauseSequencing)
             {
                 frameCounter++;
+                if (pattern.spinSpeed > 0)
+                {
+                    origin += pattern.spinSpeed;
+                }
             }
             yield return null;
         }
