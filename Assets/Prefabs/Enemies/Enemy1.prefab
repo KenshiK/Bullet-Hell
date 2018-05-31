@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 33168365369164248}
   - component: {fileID: 23740538247452630}
   - component: {fileID: 65089131842759620}
+  - component: {fileID: 114333528267328462}
   m_Layer: 0
   m_Name: Enemy1
   m_TagString: Untagged
@@ -96,3 +97,25 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 3.365516, y: 0.84261847, z: 3.285402}
   m_Center: {x: 0.0000013709075, y: 0.122621834, z: -0.17548193}
+--- !u!114 &114333528267328462
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1390912162019256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0c9e467711d1cc43ac060d51936fbb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletPatterns:
+  - bulletArrays: []
+    bulletsPerArray: 0
+    arrayBulletSpread: 0
+    arraySpread: 0
+    spinSpeed: 0
+    speedChange: 0
+    spinReversal: 0
+    maxSpinSpeed: 0
+    fireRate: 0
+    bulletSpeed: 0

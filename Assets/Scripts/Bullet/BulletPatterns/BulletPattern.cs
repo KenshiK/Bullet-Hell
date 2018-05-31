@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletPattern : MonoBehaviour {
+[CreateAssetMenu]
+public class BulletPattern : ScriptableObject {
 
     [Header("Global Settings")]
+    [SerializeField] public List<BulletArray> bulletArrays;
     [SerializeField] private int bulletsPerArray;
-    [SerializeField] private int arrayBulletSpread;
-    [SerializeField] private int bulletArrays;
-    [SerializeField] private int arraySpread;
+    [SerializeField] private float arrayBulletSpread;
+    [SerializeField] private float arraySpread;
 
-    [Header("Spin Settings")]
+    [Header("Speed & Spin Settings")]
     [SerializeField] private float spinSpeed;
     [SerializeField] private bool speedChange;
     [SerializeField] private bool spinReversal;
@@ -19,13 +20,11 @@ public class BulletPattern : MonoBehaviour {
     [Header("Bullet Settings")]
     [SerializeField] private float fireRate;
     [SerializeField] private float bulletSpeed;
-    // Use this for initialization
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+}
+
+[System.Serializable]
+public struct BulletArray
+{
+    public List<string> bulletTags;
+    public int bulletTypeDuration;
 }
