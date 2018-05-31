@@ -55,15 +55,17 @@ public class PatternSequencer : MonoBehaviour {
             int fireRate = pattern.fireRate == 0 ? 1 : pattern.fireRate;
             if (frameCounter % fireRate == 0)
             {
-                foreach(BulletArray ba in pattern.bulletArrays)
+                for(int i = 0; i < pattern.bulletArrays.Count; ++i)
                 {
-                    string tag = GetCurrentBulletTag(ba, frameCounter);
-                    float angle = pattern.bulletsPerArray > 2 ? pattern.arrayBulletSpread / (pattern.bulletsPerArray - 1) : pattern.arrayBulletSpread;
+                    string tag = GetCurrentBulletTag(pattern.bulletArrays[i], frameCounter);
+                    float bulletAngle = pattern.bulletsPerArray > 2 ? pattern.arrayBulletSpread / (pattern.bulletsPerArray - 1) : pattern.arrayBulletSpread;
+                    float arrayAngle = pattern.bulletArrays.Count > 2 ? pattern.arraySpread / (pattern.bulletArrays.Count - 1) : pattern.arraySpread;
                     for (int j = 0; j < pattern.bulletsPerArray; ++j)
                     {
+                        float firingAngle = pattern.origin + i * arrayAngle + j * bulletAngle;
+
                         GameObject bullet = bulletPool.SpawnFromPool(tag, transform.position, Quaternion.identity);
-                        
-                        Vector3 force = ComputeForce(pattern.origin + j * angle, pattern.bulletSpeed);
+                        Vector3 force = ComputeForce(firingAngle, pattern.bulletSpeed);
                         bullet.GetComponent<Rigidbody>().velocity = force;
                     }
                 }
