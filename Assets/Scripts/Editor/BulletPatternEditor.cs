@@ -24,6 +24,7 @@ public class BulletPatternEditor : Editor {
         spinReversal = m_Object.FindProperty("spinReversal");
 
         positiveProperties.Add("bulletsPerArray", m_Object.FindProperty("bulletsPerArray"));
+        positiveProperties.Add("origin", m_Object.FindProperty("origin"));
         positiveProperties.Add("arrayBulletSpread", m_Object.FindProperty("arrayBulletSpread"));
         positiveProperties.Add("arraySpread", m_Object.FindProperty("arraySpread"));
         positiveProperties.Add("spinSpeed",m_Object.FindProperty("spinSpeed"));
@@ -39,11 +40,16 @@ public class BulletPatternEditor : Editor {
         GUILayout.Label("Bullet Pattern Creator", EditorStyles.boldLabel);
         EditorList.Show(bulletArrays);
 
+        EditorGUILayout.PropertyField(positiveProperties["bulletsPerArray"]);
+
         GUILayout.Label("Array Bullet Spread");
         positiveProperties["arrayBulletSpread"].floatValue = EditorGUILayout.Slider(positiveProperties["arrayBulletSpread"].floatValue, 0, 360);
 
         GUILayout.Label("Array Spread");
         positiveProperties["arraySpread"].floatValue = EditorGUILayout.Slider(positiveProperties["arraySpread"].floatValue, 0, 360);
+
+        GUILayout.Label("Origin");
+        positiveProperties["origin"].floatValue = EditorGUILayout.Slider(positiveProperties["origin"].floatValue, 0, 360);
 
         EditorGUILayout.PropertyField(positiveProperties["spinSpeed"]);
         EditorGUILayout.PropertyField(speedChange);

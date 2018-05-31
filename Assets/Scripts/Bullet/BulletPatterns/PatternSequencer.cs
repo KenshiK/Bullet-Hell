@@ -58,15 +58,14 @@ public class PatternSequencer : MonoBehaviour {
                 foreach(BulletArray ba in pattern.bulletArrays)
                 {
                     string tag = GetCurrentBulletTag(ba, frameCounter);
-                    
-                    GameObject bullet = bulletPool.SpawnFromPool(tag, transform.position, Quaternion.identity);
-                    Vector3 force;
-                    if (Player)
-                        force = new Vector3(0f, 0f, pattern.bulletSpeed);
-                    else
-                        force = new Vector3(0f, 0f, -pattern.bulletSpeed);
-
-                    bullet.GetComponent<Rigidbody>().AddForce(force, ForceMode.Impulse);
+                    float angle = pattern.bulletsPerArray > 2 ? pattern.arrayBulletSpread / (pattern.bulletsPerArray - 1) : pattern.arrayBulletSpread;
+                    for (int j = 0; j < pattern.bulletsPerArray; ++j)
+                    {
+                        GameObject bullet = bulletPool.SpawnFromPool(tag, transform.position, Quaternion.identity);
+                        
+                        Vector3 force = ComputeForce(pattern.origin + j * angle, pattern.bulletSpeed);
+                        bullet.GetComponent<Rigidbody>().velocity = force;
+                    }
                 }
             }
 
@@ -78,6 +77,15 @@ public class PatternSequencer : MonoBehaviour {
         }
         yield return new WaitForSeconds(patternTimeInterval);
         firing = false;
+    }
+
+    private Vector3 ComputeForce(float angle, float speed)
+    {
+        float tempSpeed = Player ? speed : -speed;
+        Vector3 force = Vector3.zero;
+        float radAngle = angle * Mathf.PI / 180;
+        force = new Vector3(Mathf.Cos(radAngle) , 0, Mathf.Sin(radAngle) ) * tempSpeed ;
+        return force;
     }
 
     private string GetCurrentBulletTag(BulletArray ba, int elapsedFrames)

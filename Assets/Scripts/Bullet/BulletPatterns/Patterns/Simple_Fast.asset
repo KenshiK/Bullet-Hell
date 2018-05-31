@@ -16,9 +16,10 @@ MonoBehaviour:
     - Bullet
     - NoMat
     bulletTypeDuration: 30
-  bulletsPerArray: 1
-  arrayBulletSpread: 0
+  bulletsPerArray: 2
+  arrayBulletSpread: 85
   arraySpread: 0
+  origin: 360
   spinSpeed: 0
   speedChange: 0
   spinReversal: 0

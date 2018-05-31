@@ -10,6 +10,7 @@ public class BulletPattern : ScriptableObject {
     public int bulletsPerArray;
     public float arrayBulletSpread;
     public float arraySpread;
+    public float origin;
 
     [Header("Speed & Spin Settings")]
     public float spinSpeed;
