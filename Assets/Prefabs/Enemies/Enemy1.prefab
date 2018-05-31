@@ -36,13 +36,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1390912162019256}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: -0.7071068, w: 0}
-  m_LocalPosition: {x: 0, y: 6.9, z: 25}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 19}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 90, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!23 &23740538247452630
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -109,13 +109,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPatterns:
-  - bulletArrays: []
-    bulletsPerArray: 0
-    arrayBulletSpread: 0
-    arraySpread: 0
-    spinSpeed: 0
-    speedChange: 0
-    spinReversal: 0
-    maxSpinSpeed: 0
-    fireRate: 0
-    bulletSpeed: 0
+  - {fileID: 0}

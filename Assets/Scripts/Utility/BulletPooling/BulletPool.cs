@@ -6,7 +6,6 @@ public class BulletPool : MonoBehaviour {
 
     public List<Pool> pools;
     public Dictionary<string, Queue<GameObject>> poolDictionnary;
-
     #region Singleton
     public static BulletPool Instance;
     public void Awake()
@@ -48,6 +47,7 @@ public class BulletPool : MonoBehaviour {
         }
 
         GameObject obj = poolDictionnary[tag].Dequeue();
+        obj.GetComponent<Rigidbody>().velocity = Vector3.zero;
         obj.transform.position = position;
         obj.transform.rotation = rotation;
         obj.SetActive(true);
@@ -55,6 +55,36 @@ public class BulletPool : MonoBehaviour {
         poolDictionnary[tag].Enqueue(obj);
 
         return obj;
+    }
+
+    public int GetActiveBullets()
+    {
+        int bullets = 0;
+        foreach(KeyValuePair<string, Queue<GameObject>> p in poolDictionnary)
+        {
+            foreach(GameObject go in p.Value)
+            {
+                if(go.activeSelf == true)
+                {
+                    bullets++;
+                }
+            }
+        }
+        return bullets;
+    }
+
+    void OnGUI()
+    {
+        int w = Screen.width, h = Screen.height;
+
+        GUIStyle style = new GUIStyle();
+
+        Rect rect = new Rect(0, 0, w, h * 2 / 100);
+        style.alignment = TextAnchor.UpperLeft;
+        style.fontSize = h * 2 / 100;
+        style.normal.textColor = Color.white;
+        string text = "Active bullets : " + GetActiveBullets();
+        GUI.Label(rect, text, style);
     }
 }
 
