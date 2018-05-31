@@ -25,10 +25,10 @@ MonoBehaviour:
   arrayBulletSpread: 90
   arraySpread: 180
   origin: 0
-  spinSpeed: 200
+  spinSpeed: 500
   speedChange: 1
   spinReversal: 1
   timeToLerp: 5
-  maxSpinSpeed: 600
+  maxSpinSpeed: 1000
   fireRate: 5
-  bulletSpeed: 5
+  bulletSpeed: 10

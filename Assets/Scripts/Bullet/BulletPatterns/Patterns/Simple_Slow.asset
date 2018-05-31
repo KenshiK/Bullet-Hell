@@ -17,9 +17,9 @@ MonoBehaviour:
     - Bullet
     bulletTypeDuration: 1
   bulletsPerArray: 3
-  arrayBulletSpread: 10
+  arrayBulletSpread: 180
   arraySpread: 0
-  origin: 85
+  origin: 0
   spinSpeed: 0
   speedChange: 0
   spinReversal: 0

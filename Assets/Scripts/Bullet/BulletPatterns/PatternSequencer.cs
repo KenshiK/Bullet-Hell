@@ -110,10 +110,11 @@ public class PatternSequencer : MonoBehaviour {
                     for (int j = 0; j < pattern.bulletsPerArray; ++j)
                     {
                         float firingAngle = origin + i * arrayAngle + j * bulletAngle;
+                        Vector3 force = ComputeForce(firingAngle, pattern.bulletSpeed);
                         GameObject bullet = bulletPool.SpawnFromPool(tag, transform.position, Quaternion.identity);
-                        if(bullet != null)
+                        if (bullet != null)
                         {
-                            Vector3 force = ComputeForce(firingAngle, pattern.bulletSpeed);
+                            bullet.transform.rotation = Quaternion.LookRotation(force);
                             bullet.GetComponent<Rigidbody>().velocity = force;
                         }
                         
