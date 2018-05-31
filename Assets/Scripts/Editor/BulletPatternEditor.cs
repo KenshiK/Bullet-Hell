@@ -11,6 +11,8 @@ public class BulletPatternEditor : Editor {
     private SerializedProperty bulletArrays;
     private SerializedProperty speedChange;
     private SerializedProperty spinReversal;
+    private SerializedProperty spinSpeed;
+    private SerializedProperty maxSpinSpeed;
 
     private Dictionary<string, SerializedProperty> positiveProperties;
     // Use this for initialization

@@ -111,5 +111,7 @@ MonoBehaviour:
   bulletPatterns:
   - {fileID: 11400000, guid: 41f7657e191364140862d7df77bb416c, type: 2}
   - {fileID: 11400000, guid: 9320ea6826b601a43bc4bccc3983bfdc, type: 2}
-  patternDuration: 120
-  patternTimeInterval: 1
+  patternTimeInterval: 0
+  Player: 0
+  sequencerReverseSpin: 0
+  randomize: 0

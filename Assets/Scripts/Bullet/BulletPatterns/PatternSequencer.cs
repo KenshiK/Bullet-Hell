@@ -7,9 +7,10 @@ public class PatternSequencer : MonoBehaviour {
     [SerializeField] List<BulletPattern> bulletPatterns;
     [Range(0, 10)] public float patternTimeInterval;
     [SerializeField] private bool Player = false;
+    [SerializeField] private bool sequencerReverseSpin;
+    [SerializeField] private bool randomize = false;
 
     private BulletPool bulletPool;
-    private bool randomize = false;
     private bool firing;
     private bool pauseSequencing = false;
     private List<BulletPattern> randomizedPatterns;
@@ -90,6 +91,10 @@ public class PatternSequencer : MonoBehaviour {
                     speed = -speed;
                 }
             }
+            if (sequencerReverseSpin)
+            {
+                speed = -speed;
+            }
             #endregion
 
             #region Position setup
@@ -126,6 +131,11 @@ public class PatternSequencer : MonoBehaviour {
         }
         yield return new WaitForSeconds(patternTimeInterval);
         firing = false;
+        //Reenter queue if the selection isn't randomized so that we don't reenqueue all patterns at once
+        if(!randomize)
+        {
+            patternQueue.Enqueue(pattern);
+        }
     }
 
     private Vector3 ComputeForce(float angle, float speed)
