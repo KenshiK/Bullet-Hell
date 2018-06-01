@@ -12,8 +12,8 @@ public class PlayerController : MonoBehaviour
     {
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
-
         Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
+
         GetComponent<Rigidbody>().velocity = movement * speed;
         
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)

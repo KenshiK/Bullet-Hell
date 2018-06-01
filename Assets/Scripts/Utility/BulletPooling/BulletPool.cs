@@ -77,13 +77,13 @@ public class BulletPool : MonoBehaviour {
 
     void OnGUI()
     {
-        int w = Screen.width, h = Screen.height;
+        int width = Screen.width, height = Screen.height;
 
         GUIStyle style = new GUIStyle();
 
-        Rect rect = new Rect(0, 0, w, h * 2 / 100);
+        Rect rect = new Rect(0, 0, width, height * 2 / 100);
         style.alignment = TextAnchor.UpperLeft;
-        style.fontSize = h * 2 / 100;
+        style.fontSize = height * 2 / 100;
         style.normal.textColor = Color.white;
         string text = "Active bullets : " + GetActiveBullets();
         GUI.Label(rect, text, style);

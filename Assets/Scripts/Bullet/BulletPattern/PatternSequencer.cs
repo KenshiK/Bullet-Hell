@@ -15,9 +15,9 @@ public class PatternSequencer : MonoBehaviour {
     private bool pauseSequencing = false;
     private List<BulletPattern> randomizedPatterns;
     private Queue<BulletPattern> patternQueue;
-
     private BulletPattern currentPattern;
     private Coroutine patternExecutionCoroutine;
+
 	// Use this for initialization
 	void Start () {
         bulletPool = BulletPool.Instance;
@@ -51,15 +51,19 @@ public class PatternSequencer : MonoBehaviour {
         float timer = 0f;
         float origin = 0;
         float timeReference = 0;
+        float rate;
+        float speed;
         bool speedUp = true;
         bool reversal = false;
         int cycles = 0;
+
         while(timer < pattern.timeToLive || pattern.timeToLive == 0)
         {
-            float rate = 1f / pattern.timeToLerp;
-            float speed = pattern.spinSpeed ;
+            rate = 1f / pattern.timeToLerp;
+            speed = pattern.spinSpeed ;
             timeReference += rate * Time.deltaTime;
 
+            /*
             #region Speed setup
             if (pattern.speedChange && pattern.timeToLerp > 0)
             {
@@ -96,7 +100,11 @@ public class PatternSequencer : MonoBehaviour {
                 speed = -speed;
             }
             #endregion
+            */
 
+            SpeedSetup(pattern, timeReference, speed, speedUp, cycles, reversal);
+
+            /*
             #region Position setup
             origin = pattern.spinSpeed > 0f ? origin + (float)(pattern.origin + speed * Time.deltaTime) : (float)(pattern.origin + speed * Time.deltaTime);
             int fireRate = pattern.fireRate == 0 ? 1 : pattern.fireRate;
@@ -122,6 +130,9 @@ public class PatternSequencer : MonoBehaviour {
                 }
             }
             #endregion
+            */
+
+            PositionSetup(pattern, origin, speed, frameCounter);
 
             if (!pauseSequencing)
             {
@@ -136,6 +147,76 @@ public class PatternSequencer : MonoBehaviour {
         if(!randomize)
         {
             patternQueue.Enqueue(pattern);
+        }
+    }
+
+    private void SpeedSetup(BulletPattern pattern, float timeReference, float speed, bool speedUp, int cycles, bool reversal)
+    {
+        if (pattern.speedChange && pattern.timeToLerp > 0)
+        {
+            float diff = pattern.maxSpinSpeed - pattern.spinSpeed;
+
+            if (timeReference > 1)
+            {
+                timeReference = 0;
+                speedUp = !speedUp;
+                cycles++;
+                //reverse every two cycle
+                if (pattern.spinReversal && cycles % 2 == 0 && cycles > 0)
+                {
+                    reversal = !reversal;
+                }
+            }
+
+            if (speedUp)
+            {
+                speed = Easing.Sinusoidal.InOut(timeReference, pattern.spinSpeed, diff, 1);
+            }
+            else
+            {
+                speed = Easing.Sinusoidal.InOut(timeReference, pattern.maxSpinSpeed, -diff, 1);
+            }
+
+            if (reversal)
+            {
+                speed = -speed;
+            }
+        }
+        if (sequencerReverseSpin)
+        {
+            speed = -speed;
+        }
+    }
+
+    private void PositionSetup(BulletPattern pattern, float origin, float speed, int frameCounter)
+    {
+        int fireRate = pattern.fireRate == 0 ? 1 : pattern.fireRate;
+
+        origin = pattern.spinSpeed > 0f ? origin + (float)(pattern.origin + speed * Time.deltaTime) : (float)(pattern.origin + speed * Time.deltaTime);
+
+        if (frameCounter % fireRate == 0)
+        {
+            float firingAngle, bulletAngle, arrayAngle;
+            string tag;
+            Vector3 force;
+            GameObject bullet;
+            for (int i = 0; i < pattern.bulletArrays.Count; ++i)
+            {
+                tag = GetCurrentBulletTag(pattern.bulletArrays[i], frameCounter);
+                bulletAngle = pattern.bulletsPerArray > 2 ? pattern.arrayBulletSpread / (pattern.bulletsPerArray - 1) : pattern.arrayBulletSpread;
+                arrayAngle = pattern.bulletArrays.Count > 2 ? pattern.arraySpread / (pattern.bulletArrays.Count - 1) : pattern.arraySpread;
+                for (int j = 0; j < pattern.bulletsPerArray; ++j)
+                {
+                    firingAngle = origin + i * arrayAngle + j * bulletAngle;
+                    force = ComputeForce(firingAngle, pattern.bulletSpeed);
+                    bullet = bulletPool.SpawnFromPool(tag, transform.position, Quaternion.identity, gameObject.tag);
+                    if (bullet != null)
+                    {
+                        bullet.transform.rotation = Quaternion.LookRotation(force);
+                        bullet.GetComponent<Rigidbody>().velocity = force;
+                    }
+                }
+            }
         }
     }
 

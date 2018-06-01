@@ -40,8 +40,8 @@ public class Bullet : MonoBehaviour {
         }
         else if ( !other.tag.Equals(Parent) && (other.tag.Equals("Player") || other.tag.Equals("Enemy")) )
         {
-            Debug.Log("Parent : " + Parent);
-            Debug.Log("Je touche : " + other.tag);
+            //Debug.Log("Parent : " + Parent);
+            //Debug.Log("Je touche : " + other.tag);
 
             other.GetComponent<Spaceship>().ApplyDamage(damages);
             ReturnToPool();
