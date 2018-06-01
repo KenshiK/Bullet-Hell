@@ -49,8 +49,8 @@ public class PatternSequencer : MonoBehaviour {
         firing = true;
         int frameCounter = 0;
         float timer = 0f;
-        float origin = 0;
-        float timeReference = 0;
+        float origin = 0f;
+        float timeReference = 0f;
         float rate;
         float speed;
         bool speedUp = true;
@@ -63,7 +63,7 @@ public class PatternSequencer : MonoBehaviour {
             speed = pattern.spinSpeed ;
             timeReference += rate * Time.deltaTime;
 
-            /*
+            
             #region Speed setup
             if (pattern.speedChange && pattern.timeToLerp > 0)
             {
@@ -100,11 +100,11 @@ public class PatternSequencer : MonoBehaviour {
                 speed = -speed;
             }
             #endregion
-            */
+            
 
-            SpeedSetup(pattern, timeReference, speed, speedUp, cycles, reversal);
+            //SpeedSetup(pattern, timeReference, speed, speedUp, cycles, reversal);
 
-            /*
+            
             #region Position setup
             origin = pattern.spinSpeed > 0f ? origin + (float)(pattern.origin + speed * Time.deltaTime) : (float)(pattern.origin + speed * Time.deltaTime);
             int fireRate = pattern.fireRate == 0 ? 1 : pattern.fireRate;
@@ -130,9 +130,9 @@ public class PatternSequencer : MonoBehaviour {
                 }
             }
             #endregion
-            */
+            
 
-            PositionSetup(pattern, origin, speed, frameCounter);
+           // PositionSetup(pattern, origin, speed, frameCounter);
 
             if (!pauseSequencing)
             {
