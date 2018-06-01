@@ -6,7 +6,7 @@ using UnityEditor;
 public class Spaceship : MonoBehaviour {
 
     #region DataNotToBeUsed
-    private int _health;
+    [SerializeField] private int _health;
     #endregion
 
     #region UsableData
@@ -41,7 +41,7 @@ public class Spaceship : MonoBehaviour {
     }
 }
 
-[CustomEditor(typeof(Spaceship))]
+/*[CustomEditor(typeof(Spaceship))]
 public class SpaceshipEditor : Editor
 {
 
@@ -60,4 +60,4 @@ public class SpaceshipEditor : Editor
         spaceship.Health = EditorGUILayout.IntField(spaceship.Health);
         EditorGUILayout.EndHorizontal();
     }
-}
+}*/

@@ -14,7 +14,7 @@ public class Bullet : MonoBehaviour {
     {
         get { return _parent; }
         set {
-            if (_parent == "")
+            //if (_parent == "")
                 _parent = value;
         }
     }
@@ -28,6 +28,7 @@ public class Bullet : MonoBehaviour {
     {
         rb.velocity = Vector3.zero;
         transform.position = transform.parent.position;
+        Parent = null;
         gameObject.SetActive(false);
     }
 
