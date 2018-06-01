@@ -32,7 +32,7 @@ public class PatternSequencer : MonoBehaviour {
         
         if(patternQueue.Count > 0 && !pauseSequencing)
         {
-            if (!firing)
+            if (!firing && bulletPool != null)
             {
                 currentPattern = patternQueue.Dequeue();
                 patternExecutionCoroutine = StartCoroutine(ExecutePattern(currentPattern));

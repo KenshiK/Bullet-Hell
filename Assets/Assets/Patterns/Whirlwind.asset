@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 069ae646abb781a41bdaa8a5ca100fdf, type: 3}
   m_Name: Whirlwind
   m_EditorClassIdentifier: 
-  timeToLive: 10
+  timeToLive: 0
   bulletArrays:
   - bulletTags:
     - Bullet
@@ -20,15 +20,15 @@ MonoBehaviour:
   - bulletTags:
     - NoMat
     - Bullet
-    bulletTypeDuration: 10
-  bulletsPerArray: 2
-  arrayBulletSpread: 90
+    bulletTypeDuration: 20
+  bulletsPerArray: 3
+  arrayBulletSpread: 240
   arraySpread: 180
   origin: 0
-  spinSpeed: 500
+  spinSpeed: 10
   speedChange: 1
   spinReversal: 1
   timeToLerp: 5
-  maxSpinSpeed: 1000
-  fireRate: 5
+  maxSpinSpeed: 50
+  fireRate: 8
   bulletSpeed: 10
