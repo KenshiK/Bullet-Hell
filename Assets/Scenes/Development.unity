@@ -195,6 +195,12 @@ Prefab:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114974769606718700, guid: b8507ee07416c5848a0823d3d53d561b,
+        type: 2}
+      propertyPath: bulletPatterns.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 41f7657e191364140862d7df77bb416c,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b8507ee07416c5848a0823d3d53d561b, type: 2}
   m_IsPrefabParent: 0
@@ -561,6 +567,26 @@ Prefab:
     - target: {fileID: 1284042668346916, guid: 2eadf3171d36daa40a530e98b7a37d44, type: 2}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 136600463883716638, guid: 2eadf3171d36daa40a530e98b7a37d44,
+        type: 2}
+      propertyPath: m_Height
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 136600463883716638, guid: 2eadf3171d36daa40a530e98b7a37d44,
+        type: 2}
+      propertyPath: m_Radius
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 136600463883716638, guid: 2eadf3171d36daa40a530e98b7a37d44,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 136600463883716638, guid: 2eadf3171d36daa40a530e98b7a37d44,
+        type: 2}
+      propertyPath: m_Direction
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2eadf3171d36daa40a530e98b7a37d44, type: 2}

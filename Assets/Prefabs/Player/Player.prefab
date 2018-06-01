@@ -25,6 +25,7 @@ GameObject:
   - component: {fileID: 64182497797639846}
   - component: {fileID: 114472131006992132}
   - component: {fileID: 114974769606718700}
+  - component: {fileID: 114988776506389828}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -140,7 +141,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1937400533814040}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0c9e467711d1cc43ac060d51936fbb3, type: 3}
   m_Name: 
@@ -151,3 +152,14 @@ MonoBehaviour:
   Player: 1
   sequencerReverseSpin: 0
   randomize: 0
+--- !u!114 &114988776506389828
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1937400533814040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7281a9191a1c3a94d9fb5c7958b8b4c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
