@@ -19,15 +19,10 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4537836624055512}
+  - component: {fileID: 54286651129090000}
   - component: {fileID: 33517285339047676}
   - component: {fileID: 23389564443026450}
   - component: {fileID: 64182497797639846}
-  - component: {fileID: 114536706622961494}
-  - component: {fileID: 114256393105439034}
-  - component: {fileID: 114304624692241440}
-  - component: {fileID: 114502615206348872}
-  - component: {fileID: 54286651129090000}
-  - component: {fileID: 64131298796139082}
   - component: {fileID: 114472131006992132}
   - component: {fileID: 114974769606718700}
   m_Layer: 9
@@ -107,20 +102,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!64 &64131298796139082
-MeshCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1937400533814040}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 1
-  m_CookingOptions: 14
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300010, guid: add769d179a9826498fc063c005d35bd, type: 3}
 --- !u!64 &64182497797639846
 MeshCollider:
   m_ObjectHideFlags: 1
@@ -135,35 +116,6 @@ MeshCollider:
   m_CookingOptions: -1
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300010, guid: add769d179a9826498fc063c005d35bd, type: 3}
---- !u!114 &114256393105439034
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1937400533814040}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7281a9191a1c3a94d9fb5c7958b8b4c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &114304624692241440
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1937400533814040}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 674192a150310134d974c707d699d081, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 10
-  tilt: 2
-  boundary:
-    xMin: -10
-    xMax: 10
-    zMin: 0
-    zMax: 20
 --- !u!114 &114472131006992132
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -182,34 +134,6 @@ MonoBehaviour:
     xMax: 10
     zMin: 0
     zMax: 20
---- !u!114 &114502615206348872
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1937400533814040}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0c9e467711d1cc43ac060d51936fbb3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bulletPatterns:
-  - {fileID: 11400000, guid: 4b7119797b9077749864a9ecc88f4e06, type: 2}
-  patternTimeInterval: 0
-  Player: 1
-  sequencerReverseSpin: 0
-  randomize: 0
---- !u!114 &114536706622961494
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1937400533814040}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7281a9191a1c3a94d9fb5c7958b8b4c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114974769606718700
 MonoBehaviour:
   m_ObjectHideFlags: 1

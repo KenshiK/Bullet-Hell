@@ -5,14 +5,17 @@ using UnityEngine;
 public class Bullet : MonoBehaviour {
 
     private Rigidbody rb;
-    private string parent = "";
+    
+    private int damages=1;
+
+    private string _parent = "";
 
     public string Parent
     {
-        get { return parent; }
+        get { return _parent; }
         set {
-            if (parent == "")
-                parent = value;
+            if (_parent == "")
+                _parent = value;
         }
     }
 
@@ -27,6 +30,7 @@ public class Bullet : MonoBehaviour {
         transform.position = transform.parent.position;
         gameObject.SetActive(false);
     }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag.Equals("BulletResetter"))
@@ -35,7 +39,10 @@ public class Bullet : MonoBehaviour {
         }
         else if ( !other.tag.Equals(Parent) && (other.tag.Equals("Player") || other.tag.Equals("Enemy")) )
         {
-            other.GetComponent<Spaceship>().ApplyDamage();
+            Debug.Log("Parent : " + Parent);
+            Debug.Log("Je touche : " + other.tag);
+
+            other.GetComponent<Spaceship>().ApplyDamage(damages);
             ReturnToPool();
         }
 

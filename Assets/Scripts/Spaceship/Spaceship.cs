@@ -5,14 +5,18 @@ using UnityEditor;
 
 public class Spaceship : MonoBehaviour {
 
-    #region PrivateData
+    #region DataNotToBeUsed
     private int _health;
     #endregion
 
-    #region PublicData
+    #region UsableData
     public int Health {
         get { return _health; }
-        set { _health = Mathf.Max(0, value); }
+        set {
+            _health = Mathf.Max(0, value);
+            if(Health == 0)
+                Death();
+        }
     }
     #endregion
 
@@ -26,9 +30,14 @@ public class Spaceship : MonoBehaviour {
 		
 	}
 
-    public void ApplyDamage()
+    public void ApplyDamage(int damages)
     {
+        Health -= damages;
+    }
 
+    protected void Death()
+    {
+        Destroy(this.gameObject);
     }
 }
 
