@@ -6,8 +6,12 @@ public class Vehicle : MonoBehaviour {
 
     [SerializeField] private float _maxSpeed;
     [SerializeField] private float _maxForce;
-    [SerializeField] private Deceleration _deceleration;    private SteeringBehaviours steering;
-
+    [SerializeField] private Deceleration _deceleration;
+    [SerializeField] private float _maxTurnRatePerSecond = 0;
+    [SerializeField] private float _turnAroundCoefficient = 0.5f;
+    public SteeringBehaviours Steering { get; private set; }
+    public bool enemy = true;
+    public float pursuitMinDist = 5f;
     public Deceleration Deceleration
     {
         get
@@ -19,34 +23,41 @@ public class Vehicle : MonoBehaviour {
     public Rigidbody RB { get; private set; }
     // Use this for initialization
     void Start () {
-        steering = GetComponent<SteeringBehaviours>();
-        if(steering == null)
-        {
-            Debug.LogError("[Vechicle]:: No instance of SteeringBehaviours on " + gameObject.name);
-        }
-        else
-        {
-            steering.Vehicle = this;
-        }
         RB = GetComponent<Rigidbody>();
-        if (target != null && steering != null)
+        if(!gameObject.CompareTag("Player"))
         {
-            steering.ArriveOn();
+            Steering = GetComponent<SteeringBehaviours>();
+            if (Steering == null)
+            {
+                Debug.LogError("[Vechicle]:: No instance of SteeringBehaviours on " + gameObject.name);
+            }
+            else
+            {
+                Steering.Vehicle = this;
+            }
+
+            if (target != null && Steering != null)
+            {
+                Steering.PursuitOn();
+            }
         }
     }
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-        if(target != null)
+        if (!gameObject.CompareTag("Player"))
         {
-            Vector3 force = steering.Calculate();
-            Vector3 acceleration = force / RB.mass;
-            RB.velocity += acceleration * Time.deltaTime;
-            RB.velocity = Vector3.ClampMagnitude(RB.velocity, _maxSpeed);
-        }
-        else
-        {
-            RB.velocity = Vector3.zero;
+            if (target != null)
+            {
+                Vector3 force = Steering.Calculate();
+                Vector3 acceleration = force / RB.mass;
+                RB.velocity += acceleration * Time.deltaTime;
+                RB.velocity = Vector3.ClampMagnitude(RB.velocity, _maxSpeed);
+            }
+            else
+            {
+                RB.velocity = Vector3.zero;
+            }
         }
     }
 
@@ -74,5 +85,27 @@ public class Vehicle : MonoBehaviour {
         }
     }
 
-    
+    public float Speed
+    {
+        get
+        {
+            return RB.velocity.magnitude;
+        }
+    }
+
+    public float MaxTurnRatePerSecond
+    {
+        get
+        {
+            return _maxTurnRatePerSecond;
+        }
+    }
+
+    public float TurnAroundCoefficient
+    {
+        get
+        {
+            return _turnAroundCoefficient;
+        }
+    }
 }

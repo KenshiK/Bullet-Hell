@@ -29,15 +29,15 @@ public enum Deceleration { slow = 3, normal = 2, fast = 1 };
 
 public class SteeringBehaviours : MonoBehaviour
 {
-    public Vehicle Vehicle { set; get; }
-
+    [SerializeField] private Vector3 offsetPursuit;
     private BehaviourType behaviours;
-    private AIManager aIManager;
+    private AIManager aiManager;
     private Vector3 steeringForce;
 
+    public Vehicle Vehicle { set; get; }
     private void Start()
     {
-        aIManager = AIManager.Instance;
+        aiManager = AIManager.Instance;
     }
 
     private bool On(BehaviourType bt)    //returns true if a specified behaviour is activated
@@ -45,6 +45,14 @@ public class SteeringBehaviours : MonoBehaviour
         return ((int)behaviours & (int)bt) == (int)bt;
     }
 
+    public Vector3 Calculate()
+    {
+        steeringForce = Vector3.zero;
+        steeringForce = CalculatePrioritized();
+        return steeringForce;
+    }
+    
+    #region Behaviours
     private Vector3 Seek(Vector3 target)
     {
         Vector3 desiredVelocity = Vector3.Normalize(target - transform.position) * Vehicle.MaxSpeed;
@@ -63,9 +71,9 @@ public class SteeringBehaviours : MonoBehaviour
         Vector3 toTarget = target - transform.position;
         float dist = toTarget.magnitude;
 
-        if (dist > aIManager.SteeringSettings.ArriveRadius)
+        if (dist > aiManager.SteeringSettings.ArriveRadius)
         {
-            float speed = dist / ((float)deceleration * aIManager.SteeringSettings.DecelerationTweaker);
+            float speed = dist / ((float)deceleration * aiManager.SteeringSettings.DecelerationTweaker);
             speed = Mathf.Min(speed, Vehicle.MaxSpeed);
 
             Vector3 desiredVelocity = toTarget * speed / dist;
@@ -74,32 +82,71 @@ public class SteeringBehaviours : MonoBehaviour
         return Vector3.zero;
     }
 
-    public Vector3 Calculate()
+    private Vector3 Pursuit(Vehicle target)
     {
-        steeringForce = Vector3.zero;
-        steeringForce = CalculatePrioritized();
-        Debug.Log(steeringForce);
-        return steeringForce;
+        Vector3 toEvader = target.transform.position - Vehicle.transform.position;
+
+        float relativeHeading = Vector3.Dot(Vehicle.RB.velocity.normalized, target.RB.velocity.normalized);
+
+        if((Vector3.Dot(toEvader, Vehicle.RB.velocity.normalized) > 0) && relativeHeading < -0.95) //if considered ahead
+        {
+            if (Vehicle.enemy && toEvader.magnitude > Vehicle.pursuitMinDist)
+            {
+                return Vehicle.RB.velocity;
+            }
+
+            return Seek(target.transform.position);
+        }
+
+        float lookAheadTime = toEvader.magnitude / (Vehicle.MaxSpeed + target.Speed);
+
+        lookAheadTime += TurnAroundTime();
+
+        return Seek(target.transform.position + target.RB.velocity * lookAheadTime);
     }
+
+    private Vector3 Evade(Vehicle pursuer)
+    {
+
+    }
+    #endregion
 
     public Vector3 CalculatePrioritized()
     {
         Vector3 force;
-        if (On(BehaviourType.seek))
+
+        if (On(BehaviourType.flee))
         {
-            force = Seek(Vehicle.target.position) * aIManager.SteeringSettings.SeekWeight;
+            force = Flee(Vehicle.target.transform.position) * aiManager.SteeringSettings.FleeWeight;
 
             if (!AccumulateForce(force)) return steeringForce;
         }
 
+        if (On(BehaviourType.seek))
+        {
+            force = Seek(Vehicle.target.position) * aiManager.SteeringSettings.SeekWeight;
+
+            if (!AccumulateForce(force)) return steeringForce;
+        }
 
         if (On(BehaviourType.arrive))
         {
-            force = Arrive(Vehicle.target.position, Vehicle.Deceleration) * aIManager.SteeringSettings.ArriveWeight;
+            force = Arrive(Vehicle.target.position, Vehicle.Deceleration) * aiManager.SteeringSettings.ArriveWeight;
 
             if (!AccumulateForce(force)) return steeringForce;
         }
 
+        if (On(BehaviourType.pursuit))
+        {
+
+            force = Pursuit(Vehicle.target.GetComponent<Vehicle>()) * aiManager.SteeringSettings.PursuitWeight;
+
+            if (!AccumulateForce(force)) return steeringForce;
+        }
+        if(gameObject.tag == "Player")
+        {
+            Debug.Log(steeringForce);
+        }
         return steeringForce;
     }
     bool AccumulateForce(Vector3 ForceToAdd)
@@ -133,17 +180,66 @@ public class SteeringBehaviours : MonoBehaviour
         return true;
     }
 
+    private float TurnAroundTime()
+    {
+        Vector3 toTarget = Vector3.Normalize(Vehicle.target.transform.position - transform.position);
+        float dot = Vector3.Dot(Vehicle.RB.velocity.normalized, toTarget);
+
+        return (dot - 1f) * - Vehicle.TurnAroundCoefficient;
+    }
+
+    #region Behaviour setters
     public void FleeOn() { behaviours |= BehaviourType.flee; }
     public void SeekOn() { behaviours |= BehaviourType.seek; }
     public void ArriveOn() { behaviours |= BehaviourType.arrive; }
+    public void WanderOn() { behaviours |= BehaviourType.wander; }
+    public void PursuitOn() { behaviours |= BehaviourType.pursuit;}
+    public void EvadeOn() { behaviours |= BehaviourType.evade;}
+    public void CohesionOn() { behaviours |= BehaviourType.cohesion; }
+    public void SeparationOn() { behaviours |= BehaviourType.separation; }
+    public void AlignmentOn() { behaviours |= BehaviourType.allignment; }
+    public void ObstacleAvoidanceOn() { behaviours |= BehaviourType.obstacle_avoidance; }
+    public void WallAvoidanceOn() { behaviours |= BehaviourType.wall_avoidance; }
+    public void FollowPathOn() { behaviours |= BehaviourType.follow_path; }
+    public void InterposeOn() { behaviours |= BehaviourType.interpose; }
+    public void HideOn(Vehicle target) { behaviours |= BehaviourType.hide; }
+    public void OffsetPursuitOn(Vehicle v1, Vector3 offset){ behaviours |= BehaviourType.offset_pursuit; offsetPursuit = offset;}
+    public void FlockingOn() { CohesionOn(); AlignmentOn(); SeparationOn(); WanderOn(); }
 
     public void FleeOff() { if (On(BehaviourType.flee)) behaviours ^= BehaviourType.flee; }
     public void SeekOff() { if (On(BehaviourType.seek)) behaviours ^= BehaviourType.seek; }
     public void ArriveOff() { if (On(BehaviourType.arrive)) behaviours ^= BehaviourType.arrive; }
+    void WanderOff() { if (On(BehaviourType.wander)) behaviours ^= BehaviourType.wander; }
+    void PursuitOff() { if (On(BehaviourType.pursuit)) behaviours ^= BehaviourType.pursuit; }
+    void EvadeOff() { if (On(BehaviourType.evade)) behaviours ^= BehaviourType.evade; }
+    void CohesionOff() { if (On(BehaviourType.cohesion)) behaviours ^= BehaviourType.cohesion; }
+    void SeparationOff() { if (On(BehaviourType.separation)) behaviours ^= BehaviourType.separation; }
+    void AlignmentOff() { if (On(BehaviourType.allignment)) behaviours ^= BehaviourType.allignment; }
+    void ObstacleAvoidanceOff() { if (On(BehaviourType.obstacle_avoidance)) behaviours ^= BehaviourType.obstacle_avoidance; }
+    void WallAvoidanceOff() { if (On(BehaviourType.wall_avoidance)) behaviours ^= BehaviourType.wall_avoidance; }
+    void FollowPathOff() { if (On(BehaviourType.follow_path)) behaviours ^= BehaviourType.follow_path; }
+    void InterposeOff() { if (On(BehaviourType.interpose)) behaviours ^= BehaviourType.interpose; }
+    void HideOff() { if (On(BehaviourType.hide)) behaviours ^= BehaviourType.hide; }
+    void OffsetPursuitOff() { if (On(BehaviourType.offset_pursuit)) behaviours ^= BehaviourType.offset_pursuit; }
+    void FlockingOff() { CohesionOff(); AlignmentOff(); SeparationOff(); WanderOff(); }
 
     public bool IsFleeOn() { return On(BehaviourType.flee); }
     public bool IsSeekOn() { return On(BehaviourType.seek); }
     public bool IsArriveOn() { return On(BehaviourType.arrive); }
+    public bool IsWanderOn() { return On(BehaviourType.wander); }
+    public bool IsPursuitOn() { return On(BehaviourType.pursuit); }
+    public bool IsEvadeOn() { return On(BehaviourType.evade); }
+    public bool IsCohesionOn() { return On(BehaviourType.cohesion); }
+    public bool IsSeparationOn() { return On(BehaviourType.separation); }
+    public bool IsAlignmentOn() { return On(BehaviourType.allignment); }
+    public bool IsObstacleAvoidanceOn() { return On(BehaviourType.obstacle_avoidance); }
+    public bool IsWallAvoidanceOn() { return On(BehaviourType.wall_avoidance); }
+    public bool IsFollowPathOn() { return On(BehaviourType.follow_path); }
+    public bool IsInterposeOn() { return On(BehaviourType.interpose); }
+    public bool IsHideOn() { return On(BehaviourType.hide); }
+    public bool IsOffsetPursuitOn() { return On(BehaviourType.offset_pursuit); }
+    #endregion
+
 }
 
 
