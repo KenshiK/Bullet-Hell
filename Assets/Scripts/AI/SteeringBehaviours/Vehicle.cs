@@ -24,6 +24,10 @@ public class Vehicle : MonoBehaviour {
     // Use this for initialization
     void Start () {
         RB = GetComponent<Rigidbody>();
+        if(RB == null)
+        {
+            RB = transform.parent.GetComponent<Rigidbody>();
+        }
         if(!gameObject.CompareTag("Player"))
         {
             Steering = GetComponent<SteeringBehaviours>();
@@ -51,7 +55,7 @@ public class Vehicle : MonoBehaviour {
                 Vector3 acceleration = force / RB.mass;
                 RB.velocity += acceleration * Time.deltaTime;
                 RB.velocity = Vector3.ClampMagnitude(RB.velocity, _maxSpeed);
-                transform.rotation = Quaternion.LookRotation(RB.velocity);
+                transform.rotation = Quaternion.LookRotation(RB.velocity); //to comment in game
             }
             else
             {
