@@ -164,7 +164,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4537836624055512, guid: b8507ee07416c5848a0823d3d53d561b, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -7.7
       objectReference: {fileID: 0}
     - target: {fileID: 4537836624055512, guid: b8507ee07416c5848a0823d3d53d561b, type: 2}
       propertyPath: m_LocalRotation.x
@@ -193,7 +193,7 @@ Prefab:
     - target: {fileID: 114974769606718700, guid: b8507ee07416c5848a0823d3d53d561b,
         type: 2}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114974769606718700, guid: b8507ee07416c5848a0823d3d53d561b,
         type: 2}
@@ -201,6 +201,28 @@ Prefab:
       value: 
       objectReference: {fileID: 11400000, guid: 41f7657e191364140862d7df77bb416c,
         type: 2}
+    - target: {fileID: 114472131006992132, guid: b8507ee07416c5848a0823d3d53d561b,
+        type: 2}
+      propertyPath: xDiv
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114472131006992132, guid: b8507ee07416c5848a0823d3d53d561b,
+        type: 2}
+      propertyPath: yDiv
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4537836624055512, guid: b8507ee07416c5848a0823d3d53d561b, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4537836624055512, guid: b8507ee07416c5848a0823d3d53d561b, type: 2}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4537836624055512, guid: b8507ee07416c5848a0823d3d53d561b, type: 2}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b8507ee07416c5848a0823d3d53d561b, type: 2}
   m_IsPrefabParent: 0
@@ -396,8 +418,8 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
-  orthographic size: 30
+  orthographic: 1
+  orthographic size: 20
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -687,7 +709,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4229478855292502, guid: 971280cbaa32f354fbb77c86f5af7f3d, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 20
+      value: 27.85
       objectReference: {fileID: 0}
     - target: {fileID: 4229478855292502, guid: 971280cbaa32f354fbb77c86f5af7f3d, type: 2}
       propertyPath: m_LocalRotation.x
@@ -719,6 +741,23 @@ Prefab:
         type: 2}
       propertyPath: _health
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114333528267328462, guid: 971280cbaa32f354fbb77c86f5af7f3d,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4229478855292502, guid: 971280cbaa32f354fbb77c86f5af7f3d, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4229478855292502, guid: 971280cbaa32f354fbb77c86f5af7f3d, type: 2}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4229478855292502, guid: 971280cbaa32f354fbb77c86f5af7f3d, type: 2}
+      propertyPath: m_LocalScale.z
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 971280cbaa32f354fbb77c86f5af7f3d, type: 2}
