@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public enum Deceleration { slow = 3, normal = 2, fast = 1 };
 //Using [Flags] to combine multiple values
@@ -33,8 +34,19 @@ public class SteeringBehaviours : MonoBehaviour
     private BehaviourType behaviours;
     private AIManager aiManager;
     private Vector3 steeringForce;
+    private Vector3 wanderTarget;
 
     public Vehicle Vehicle { set; get; }
+    public float wanderRadius;
+    public float wanderDistance;
+    public float wanderJitter;
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position - Vector3.forward * wanderDistance, wanderRadius);
+    }
+
     private void Start()
     {
         aiManager = AIManager.Instance;
@@ -84,7 +96,7 @@ public class SteeringBehaviours : MonoBehaviour
 
     private Vector3 Pursuit(Vehicle target)
     {
-        Vector3 toEvader = target.transform.position - Vehicle.transform.position;
+        Vector3 toEvader = target.transform.position - transform.position;
 
         float relativeHeading = Vector3.Dot(Vehicle.RB.velocity.normalized, target.RB.velocity.normalized);
 
@@ -107,7 +119,20 @@ public class SteeringBehaviours : MonoBehaviour
 
     private Vector3 Evade(Vehicle pursuer)
     {
+        Vector3 toPursuer = pursuer.transform.position - transform.position;
+        float lookAheadTime = toPursuer.magnitude / (Vehicle.MaxSpeed + pursuer.Speed);
 
+        return Flee(pursuer.transform.position + pursuer.RB.velocity * lookAheadTime);
+    }
+
+    private Vector3 Wander()
+    {
+        wanderTarget += new Vector3(UnityEngine.Random.Range(-1f,1f) * wanderJitter, 0, UnityEngine.Random.Range(-1f, 1f) * wanderJitter);
+        wanderTarget = wanderTarget.normalized * wanderRadius;
+
+        Vector3 targetLocal = wanderTarget + new Vector3(0, 0, wanderDistance);
+        Vector3 targetWorld = transform.TransformPoint(targetLocal);
+        return targetWorld - transform.position;
     }
     #endregion
 
@@ -124,14 +149,21 @@ public class SteeringBehaviours : MonoBehaviour
 
         if (On(BehaviourType.seek))
         {
-            force = Seek(Vehicle.target.position) * aiManager.SteeringSettings.SeekWeight;
+            force = Seek(Vehicle.target.transform.position) * aiManager.SteeringSettings.SeekWeight;
 
             if (!AccumulateForce(force)) return steeringForce;
         }
 
         if (On(BehaviourType.arrive))
         {
-            force = Arrive(Vehicle.target.position, Vehicle.Deceleration) * aiManager.SteeringSettings.ArriveWeight;
+            force = Arrive(Vehicle.target.transform.position, Vehicle.Deceleration) * aiManager.SteeringSettings.ArriveWeight;
+
+            if (!AccumulateForce(force)) return steeringForce;
+        }
+
+        if (On(BehaviourType.wander))
+        {
+            force = Wander() * aiManager.SteeringSettings.WanderWeight;
 
             if (!AccumulateForce(force)) return steeringForce;
         }
@@ -142,10 +174,6 @@ public class SteeringBehaviours : MonoBehaviour
             force = Pursuit(Vehicle.target.GetComponent<Vehicle>()) * aiManager.SteeringSettings.PursuitWeight;
 
             if (!AccumulateForce(force)) return steeringForce;
-        }
-        if(gameObject.tag == "Player")
-        {
-            Debug.Log(steeringForce);
         }
         return steeringForce;
     }
@@ -239,6 +267,7 @@ public class SteeringBehaviours : MonoBehaviour
     public bool IsHideOn() { return On(BehaviourType.hide); }
     public bool IsOffsetPursuitOn() { return On(BehaviourType.offset_pursuit); }
     #endregion
+
 
 }
 

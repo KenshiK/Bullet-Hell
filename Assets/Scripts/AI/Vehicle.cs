@@ -19,7 +19,7 @@ public class Vehicle : MonoBehaviour {
             return _deceleration;
         }
     }
-    public Transform target;
+    public Vehicle target;
     public Rigidbody RB { get; private set; }
     // Use this for initialization
     void Start () {
@@ -38,7 +38,7 @@ public class Vehicle : MonoBehaviour {
 
             if (target != null && Steering != null)
             {
-                Steering.PursuitOn();
+                Steering.WanderOn();
             }
         }
     }
@@ -53,6 +53,7 @@ public class Vehicle : MonoBehaviour {
                 Vector3 acceleration = force / RB.mass;
                 RB.velocity += acceleration * Time.deltaTime;
                 RB.velocity = Vector3.ClampMagnitude(RB.velocity, _maxSpeed);
+                transform.rotation = Quaternion.LookRotation(RB.velocity);
             }
             else
             {
