@@ -6,7 +6,7 @@ using UnityEditor;
 
 public enum Deceleration { slow = 3, normal = 2, fast = 1 };
 //Using [Flags] to combine multiple values
-[Flags] public enum BehaviourType
+[Flags] enum BehaviourType
 {
     none = 1 << 0 ,
     seek = 1 << 1,
@@ -14,17 +14,17 @@ public enum Deceleration { slow = 3, normal = 2, fast = 1 };
     arrive = 1 << 3,
     wander = 1 << 4,
     cohesion = 1 << 5,
-    separation = 1 << 7,
-    allignment = 1 << 8,
-    obstacle_avoidance = 1 << 9,
-    wall_avoidance = 1 << 10,
-    follow_path = 1 << 11,
-    pursuit = 1 << 12,
-    evade = 1 << 13,
-    interpose = 1 << 14,
-    hide = 1 << 15,
-    flock = 1 << 16,
-    offset_pursuit = 1 << 17,
+    separation = 1 << 6,
+    allignment = 1 << 7,
+    obstacle_avoidance = 1 << 8,
+    wall_avoidance = 1 << 9,
+    follow_path = 1 << 10,
+    pursuit = 1 << 11,
+    evade = 1 << 12,
+    interpose = 1 << 13,
+    hide = 1 << 14,
+    flock = 1 << 15,
+    offset_pursuit = 1 << 16,
 };
 
 
@@ -35,13 +35,15 @@ public class SteeringBehaviours : MonoBehaviour
     private AIManager aiManager;
     private Vector3 steeringForce;
     private Vector3 wanderTarget;
+    private Vector3[] feelers;
 
     public Vehicle Vehicle { set; get; }
     public float wanderRadius;
     public float wanderDistance;
     public float wanderJitter;
+    public LayerMask obstacleLayer = 0;
     [EnumFlag]
-    public BehaviourType behaviours;
+    [SerializeField] private BehaviourType behaviours;
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
@@ -51,6 +53,11 @@ public class SteeringBehaviours : MonoBehaviour
     private void Start()
     {
         aiManager = AIManager.Instance;
+        feelers = new Vector3[3];
+        if(obstacleLayer == 0)
+        {
+            obstacleLayer = LayerMask.GetMask("Obstacle");
+        }
     }
 
     private bool On(BehaviourType bt)    //returns true if a specified behaviour is activated
@@ -135,11 +142,82 @@ public class SteeringBehaviours : MonoBehaviour
         Vector3 targetWorld = transform.TransformPoint(targetLocal);
         return targetWorld - transform.position;
     }
+
+    private Vector3 WallAvoidance()
+    {
+        CreateFeelers();
+
+        float distToThisIP = 0.0f;
+        float distToClosestIP = float.MaxValue;
+
+        Vector3 force = Vector3.zero;
+        Collider closestObstacle = null;
+        Vector3 closestPoint = Vector3.zero; ;
+        int feelerIndex = 0; ;
+        
+        for(int flr = 0; flr < feelers.Length; flr++)
+        {
+            RaycastHit hit;
+            Vector3 dir = feelers[flr] - transform.position;
+            if(Physics.Raycast(transform.position, dir.normalized, out hit, dir.magnitude, obstacleLayer))
+            {
+                if (distToThisIP < distToClosestIP)
+                {
+                    distToClosestIP = distToThisIP;
+                    closestObstacle = hit.collider;
+                    closestPoint = hit.point;
+                    feelerIndex = flr;
+                }
+            }
+        }
+
+        if(closestObstacle != null)
+        {
+            Vector3 overshoot = feelers[feelerIndex] - closestPoint;
+            Vector3 minExtent = closestObstacle.bounds.min;
+            minExtent = new Vector3(minExtent.x, 0, minExtent.z);
+            Vector3 maxExtent = closestObstacle.bounds.max;
+            maxExtent = new Vector3(maxExtent.x, 0, maxExtent.z);
+
+            float dx = maxExtent.x - minExtent.x;
+            float dy = maxExtent.z - minExtent.z;
+            Vector3[] normals = { new Vector3(-dy, 0, dx) + closestObstacle.transform.position, new Vector3(dy, 0, -dx) + closestObstacle.transform.position };
+            Vector3 closestNormal = Vector3.zero;
+            float closestNormalDist = float.MaxValue;
+            for(int i = 0; i < normals.Length; i++)
+            {
+                float dist = Vector3.Distance(normals[i], transform.position);
+                if ( dist < closestNormalDist)
+                {
+                    closestNormal = normals[i];
+                    closestNormalDist = dist;
+                }
+            }
+            force = closestNormal.normalized * overshoot.magnitude;
+        }
+        return force;
+    }
     #endregion
 
-    public Vector3 CalculatePrioritized()
+    private Vector3 CalculatePrioritized()
     {
         Vector3 force;
+        if (On(BehaviourType.wall_avoidance))
+        {
+            force = WallAvoidance() * aiManager.SteeringSettings.WallAvoidanceWeight; ;
+            if (!AccumulateForce(force))
+            {
+                return steeringForce;
+            }
+                
+
+        }
+
+        if (On(BehaviourType.evade))
+        {
+            force = Evade(Vehicle.target) * aiManager.SteeringSettings.EvadeWeight;
+            if (!AccumulateForce(force)) return steeringForce;
+        }
 
         if (On(BehaviourType.flee))
         {
@@ -178,7 +256,8 @@ public class SteeringBehaviours : MonoBehaviour
         }
         return steeringForce;
     }
-    bool AccumulateForce(Vector3 ForceToAdd)
+
+    private bool AccumulateForce(Vector3 ForceToAdd)
     {
 
         float MagnitudeSoFar = steeringForce.magnitude;
@@ -209,6 +288,26 @@ public class SteeringBehaviours : MonoBehaviour
         return true;
     }
 
+    private void CreateFeelers()
+    {
+        float feelerLength = aiManager.SteeringSettings.WallDetectionFeelerLength;
+        feelers[0] = transform.position + feelerLength * Vehicle.RB.velocity.normalized;
+
+        Vector3 temp = Vehicle.RB.velocity.normalized;
+        temp = RotatePointAroundPivot(temp, Vector3.up, new Vector3(0, -45, 0));
+        feelers[1] = transform.position + feelerLength / 2f * temp;
+        
+        temp = Vehicle.RB.velocity.normalized;
+        temp = RotatePointAroundPivot(temp, Vector3.up, new Vector3(0, 45, 0));
+        feelers[2] = transform.position + feelerLength / 2f * temp;
+    }
+
+    public Vector3  RotatePointAroundPivot(Vector3 point, Vector3 pivot, Vector3 angle){
+       Vector3 dir = point - pivot; 
+       dir = Quaternion.Euler(angle) * dir;
+       point = dir + pivot; 
+       return point;
+    }
     private float TurnAroundTime()
     {
         Vector3 toTarget = Vector3.Normalize(Vehicle.target.transform.position - transform.position);
@@ -217,8 +316,8 @@ public class SteeringBehaviours : MonoBehaviour
         return (dot - 1f) * - Vehicle.TurnAroundCoefficient;
     }
 
-    #region Behaviour setters
-    public void FleeOn() { behaviours |= BehaviourType.flee; }
+        #region Behaviour setters
+        public void FleeOn() { behaviours |= BehaviourType.flee; }
     public void SeekOn() { behaviours |= BehaviourType.seek; }
     public void ArriveOn() { behaviours |= BehaviourType.arrive; }
     public void WanderOn() { behaviours |= BehaviourType.wander; }
@@ -269,6 +368,10 @@ public class SteeringBehaviours : MonoBehaviour
     public bool IsOffsetPursuitOn() { return On(BehaviourType.offset_pursuit); }
     #endregion
 
+    public Vector3[] GetFeelers()
+    {
+        return feelers;
+    }
 
 }
 

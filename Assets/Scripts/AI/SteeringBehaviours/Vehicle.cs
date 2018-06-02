@@ -37,13 +37,15 @@ public class Vehicle : MonoBehaviour {
             }
             
         }
+
+        
     }
 	
 	// Update is called once per frame
 	void FixedUpdate () {
         if (!gameObject.CompareTag("Player"))
         {
-            if (target != null || Steering.IsWanderOn())
+            if (target != null || Steering.IsWanderOn() || Steering.IsWallAvoidanceOn())
             {
                 Vector3 force = Steering.Calculate();
                 Vector3 acceleration = force / RB.mass;

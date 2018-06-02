@@ -5,6 +5,8 @@ using UnityEngine;
 [CreateAssetMenu]
 public class SteeringSettings : ScriptableObject
 {
+    public float WallDetectionFeelerLength = 5.0f;
+
     public float DecelerationTweaker = 0.5f;
 
     public float SeparationWeight = 1.0f;
