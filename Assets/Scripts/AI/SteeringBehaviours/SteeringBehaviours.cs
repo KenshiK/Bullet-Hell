@@ -6,32 +6,32 @@ using UnityEditor;
 
 public enum Deceleration { slow = 3, normal = 2, fast = 1 };
 //Using [Flags] to combine multiple values
-[Flags] enum BehaviourType
+[Flags] public enum BehaviourType
 {
-    none = 0x00000,
-    seek = 0x00002,
-    flee = 0x00004,
-    arrive = 0x00008,
-    wander = 0x00010,
-    cohesion = 0x00020,
-    separation = 0x00040,
-    allignment = 0x00080,
-    obstacle_avoidance = 0x00100,
-    wall_avoidance = 0x00200,
-    follow_path = 0x00400,
-    pursuit = 0x00800,
-    evade = 0x01000,
-    interpose = 0x02000,
-    hide = 0x04000,
-    flock = 0x08000,
-    offset_pursuit = 0x10000,
+    none = 1 << 0 ,
+    seek = 1 << 1,
+    flee = 1 << 2,
+    arrive = 1 << 3,
+    wander = 1 << 4,
+    cohesion = 1 << 5,
+    separation = 1 << 7,
+    allignment = 1 << 8,
+    obstacle_avoidance = 1 << 9,
+    wall_avoidance = 1 << 10,
+    follow_path = 1 << 11,
+    pursuit = 1 << 12,
+    evade = 1 << 13,
+    interpose = 1 << 14,
+    hide = 1 << 15,
+    flock = 1 << 16,
+    offset_pursuit = 1 << 17,
 };
 
 
 public class SteeringBehaviours : MonoBehaviour
 {
     [SerializeField] private Vector3 offsetPursuit;
-    private BehaviourType behaviours;
+    
     private AIManager aiManager;
     private Vector3 steeringForce;
     private Vector3 wanderTarget;
@@ -40,7 +40,8 @@ public class SteeringBehaviours : MonoBehaviour
     public float wanderRadius;
     public float wanderDistance;
     public float wanderJitter;
-
+    [EnumFlag]
+    public BehaviourType behaviours;
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;

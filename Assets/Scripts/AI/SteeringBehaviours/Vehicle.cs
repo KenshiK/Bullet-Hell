@@ -35,11 +35,7 @@ public class Vehicle : MonoBehaviour {
             {
                 Steering.Vehicle = this;
             }
-
-            if (target != null && Steering != null)
-            {
-                Steering.WanderOn();
-            }
+            
         }
     }
 	
@@ -47,7 +43,7 @@ public class Vehicle : MonoBehaviour {
 	void FixedUpdate () {
         if (!gameObject.CompareTag("Player"))
         {
-            if (target != null)
+            if (target != null || Steering.IsWanderOn())
             {
                 Vector3 force = Steering.Calculate();
                 Vector3 acceleration = force / RB.mass;
