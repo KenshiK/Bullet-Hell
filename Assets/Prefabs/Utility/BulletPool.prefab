@@ -99,10 +99,10 @@ MonoBehaviour:
   pools:
   - tag: Bullet
     prefab: {fileID: 1284042668346916, guid: 2eadf3171d36daa40a530e98b7a37d44, type: 2}
-    size: 300
+    size: 500
   - tag: NoMat
     prefab: {fileID: 1988164011393854, guid: 092ec5f26abdde14b938d5f3e23e86c7, type: 2}
-    size: 300
+    size: 500
 --- !u!135 &135741162946773578
 SphereCollider:
   m_ObjectHideFlags: 1

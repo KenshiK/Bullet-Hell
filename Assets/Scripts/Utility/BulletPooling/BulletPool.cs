@@ -6,14 +6,29 @@ public class BulletPool : MonoBehaviour {
 
     public List<Pool> pools;
     public Dictionary<string, Queue<GameObject>> poolDictionnary;
-
+    private static BulletPool _instance;
     #region Singleton
-    public static BulletPool Instance;
+    public static BulletPool Instance
+    {
+        set
+        {
+            _instance = value;
+        }
+        get
+        {
+            if(_instance == null)
+            {
+                Debug.LogError("[BulletPool] :: No instance of" + typeof(BulletPool));
+                return null;
+            }
+            return _instance;
+        }
+    }
     public void Awake()
     {
-        if(Instance == null)
+        if(_instance == null)
         {
-            Instance = this;
+            _instance = this;
         }
         else
         {

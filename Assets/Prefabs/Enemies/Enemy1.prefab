@@ -25,6 +25,8 @@ GameObject:
   - component: {fileID: 64601976908974208}
   - component: {fileID: 114333528267328462}
   - component: {fileID: 114754854523773962}
+  - component: {fileID: 114253353075002992}
+  - component: {fileID: 114672491331773310}
   m_Layer: 0
   m_Name: Enemy1
   m_TagString: Enemy
@@ -38,7 +40,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1390912162019256}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 20}
   m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_Children: []
@@ -116,7 +118,7 @@ MeshCollider:
   m_CookingOptions: -1
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300016, guid: add769d179a9826498fc063c005d35bd, type: 3}
---- !u!114 &114333528267328462
+--- !u!114 &114253353075002992
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -124,15 +126,41 @@ MonoBehaviour:
   m_GameObject: {fileID: 1390912162019256}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8561bcaa1c7480c428188642031c8855, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114333528267328462
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1390912162019256}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0c9e467711d1cc43ac060d51936fbb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPatterns:
-  - {fileID: 11400000, guid: 41f7657e191364140862d7df77bb416c, type: 2}
+  - {fileID: 11400000, guid: 4b7119797b9077749864a9ecc88f4e06, type: 2}
   patternTimeInterval: 0
   Player: 0
   sequencerReverseSpin: 0
   randomize: 0
+--- !u!114 &114672491331773310
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1390912162019256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a05d07b31f994444876d88b3c29d7d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxSpeed: 10
+  _maxForce: 10
+  _deceleration: 2
+  target: {fileID: 0}
 --- !u!114 &114754854523773962
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -144,3 +172,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7281a9191a1c3a94d9fb5c7958b8b4c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _health: 0
