@@ -11,13 +11,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ebd0557da0f86b4aae50b95da63dff1, type: 3}
   m_Name: DefaultSteeringSettings
   m_EditorClassIdentifier: 
-  WallDetectionFeelerLength: 20
+  WallDetectionFeelerLength: 10
   DecelerationTweaker: 0.5
   SeparationWeight: 1
   AlignmentWeight: 1
   CohesionWeight: 2
   ObstacleAvoidanceWeight: 10
-  WallAvoidanceWeight: 10
+  WallAvoidanceWeight: 40
   WanderWeight: 1
   SeekWeight: 1
   FleeWeight: 1

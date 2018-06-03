@@ -279,7 +279,8 @@ MonoBehaviour:
   offsetPursuit: {x: 0, y: 0, z: 0}
   wanderRadius: 2
   wanderDistance: 3
-  wanderJitter: 2
+  wanderJitter: 1.5
+  waypointSeekDistance: 2
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 2048
@@ -302,6 +303,9 @@ MonoBehaviour:
   _turnAroundCoefficient: 0.5
   enemy: 1
   pursuitMinDist: 5
+  _path: {fileID: 0}
+  waypointSeekDistance: 2
+  loopPath: 0
   target: {fileID: 0}
 --- !u!114 &114206768145821310
 MonoBehaviour:

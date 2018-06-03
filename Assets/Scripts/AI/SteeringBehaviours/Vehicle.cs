@@ -11,7 +11,17 @@ public class Vehicle : MonoBehaviour {
     [SerializeField] private float _turnAroundCoefficient = 0.5f;
     public SteeringBehaviours Steering { get; private set; }
     public bool enemy = true;
+
+    [Header("Pursuit Settings")]
     public float pursuitMinDist = 5f;
+
+    [Header("Follow Path Settings")]
+    [SerializeField] private PathWaypoint _path;
+    public float waypointSeekDistance = 2.0f;
+    public bool loopPath;
+
+    private Transform currentWaypoint;
+    private int waypointIndex = 0;
     public Deceleration Deceleration
     {
         get
@@ -39,23 +49,32 @@ public class Vehicle : MonoBehaviour {
             {
                 Steering.Vehicle = this;
             }
-            
         }
-
-        
     }
 	
 	// Update is called once per frame
 	void FixedUpdate () {
         if (!gameObject.CompareTag("Player"))
         {
-            if (target != null || Steering.IsWanderOn() || Steering.IsWallAvoidanceOn())
+            if (target != null || Steering.IsWanderOn() || Steering.IsWallAvoidanceOn() || Steering.IsFollowPathOn())
             {
                 Vector3 force = Steering.Calculate();
                 Vector3 acceleration = force / RB.mass;
                 RB.velocity += acceleration * Time.deltaTime;
                 RB.velocity = Vector3.ClampMagnitude(RB.velocity, _maxSpeed);
-                transform.rotation = Quaternion.LookRotation(RB.velocity); //to comment in game
+                if (_maxTurnRatePerSecond == 0)
+                {
+                    transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, RB.velocity, 500, 0.0F));
+                }
+                else
+                {
+                    //buggy, to improve
+                    if(Vector3.Angle(RB.velocity.normalized, acceleration) > _maxTurnRatePerSecond)
+                    {
+                        float step = _maxTurnRatePerSecond * Mathf.Deg2Rad * Time.deltaTime;
+                        transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, RB.velocity, step, 0.0F));
+                    }
+                }
             }
             else
             {
@@ -63,6 +82,52 @@ public class Vehicle : MonoBehaviour {
             }
         }
     }
+
+    public Vector3 GetCurrentWaypoint()
+    {
+        if(_path != null)
+        {
+            currentWaypoint = _path.GetWaypointAtIndex(waypointIndex);
+            return currentWaypoint.position;
+        }
+        else
+        {
+            Debug.LogError("No path set for" + gameObject.name);
+            return Vector3.zero;
+        }
+       
+    }
+
+    public void SetNextWaypoint()
+    {
+        if (_path != null)
+        {
+            waypointIndex++;
+            if (waypointIndex >= _path.GetPath().Count)
+            {
+                if (loopPath)
+                {
+                    waypointIndex = 0;
+                    currentWaypoint = _path.GetWaypointAtIndex(waypointIndex);
+                }
+                else
+                {
+                    waypointIndex = _path.GetPath().Count;
+                }
+            }
+        }
+        else
+        {
+            Debug.LogError("No path set for" + gameObject.name);
+        }
+    }
+
+    public bool PathFinished()
+    {
+        return (waypointIndex >= _path.GetPath().Count);
+    }
+
+    public PathWaypoint PathWaypoint { get; set; }
 
     public float MaxSpeed
     {

@@ -38,9 +38,16 @@ public class SteeringBehaviours : MonoBehaviour
     private Vector3[] feelers;
 
     public Vehicle Vehicle { set; get; }
+    [Header("Wander Settings")]
     public float wanderRadius;
     public float wanderDistance;
     public float wanderJitter;
+
+    [Header("Follow Paths Settings")]
+    public float waypointSeekDistance = 2.0f;
+
+    private float waypointSeekDistanceSqr;
+    private Transform currentWaypoint;
     public LayerMask obstacleLayer = 0;
     [EnumFlag]
     [SerializeField] private BehaviourType behaviours;
@@ -58,6 +65,7 @@ public class SteeringBehaviours : MonoBehaviour
         {
             obstacleLayer = LayerMask.GetMask("Obstacle");
         }
+        waypointSeekDistanceSqr = waypointSeekDistance * waypointSeekDistance;
     }
 
     private bool On(BehaviourType bt)    //returns true if a specified behaviour is activated
@@ -189,13 +197,33 @@ public class SteeringBehaviours : MonoBehaviour
                 float dist = Vector3.Distance(normals[i], transform.position);
                 if ( dist < closestNormalDist)
                 {
+                    
                     closestNormal = normals[i];
                     closestNormalDist = dist;
+                    
                 }
+                
             }
-            force = closestNormal.normalized * overshoot.magnitude;
+            force = (closestNormal - closestObstacle.transform.position).normalized * overshoot.magnitude;
         }
         return force;
+    }
+
+    private Vector3 FollowPath()
+    {
+        if(Vector3.Distance(Vehicle.GetCurrentWaypoint(), transform.position) < waypointSeekDistance)
+        {
+            Vehicle.SetNextWaypoint();
+        }
+
+        /*if (!Vehicle.PathFinished())
+        {
+            return Arrive(Vehicle.GetCurrentWaypoint(), Vehicle.Deceleration);
+        }
+        else
+        {*/
+            return Arrive(Vehicle.GetCurrentWaypoint(), Vehicle.Deceleration);
+        //}
     }
     #endregion
 
@@ -209,8 +237,6 @@ public class SteeringBehaviours : MonoBehaviour
             {
                 return steeringForce;
             }
-                
-
         }
 
         if (On(BehaviourType.evade))
@@ -254,6 +280,13 @@ public class SteeringBehaviours : MonoBehaviour
 
             if (!AccumulateForce(force)) return steeringForce;
         }
+
+        if (On(BehaviourType.follow_path))
+        {
+            force = FollowPath() * aiManager.SteeringSettings.FollowPathWeight;
+            if (!AccumulateForce(force)) return steeringForce;
+        }
+
         return steeringForce;
     }
 

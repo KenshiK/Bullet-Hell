@@ -12,18 +12,20 @@ public class FeelerVisualization : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-        Vector3[] feelers = steering.GetFeelers();
-        if(feelers[0] != Vector3.zero && feelers[1] != Vector3.zero && feelers[2] != Vector3.zero)
+        if (steering.IsWallAvoidanceOn())
         {
-            for (int i = 0; i < feelers.Length; i++)
+            Vector3[] feelers = steering.GetFeelers();
+            if (feelers[0] != Vector3.zero && feelers[1] != Vector3.zero && feelers[2] != Vector3.zero)
             {
-                LineRenderer line = transform.GetChild(i).GetComponent<LineRenderer>();
-                line.useWorldSpace = true;
-                line.positionCount = 2;
-                Vector3[] points = { transform.position, feelers[i]};
-                line.SetPositions(points);
+                for (int i = 0; i < feelers.Length; i++)
+                {
+                    LineRenderer line = transform.GetChild(i).GetComponent<LineRenderer>();
+                    line.useWorldSpace = true;
+                    line.positionCount = 2;
+                    Vector3[] points = { transform.position, feelers[i] };
+                    line.SetPositions(points);
+                }
             }
         }
-        
 	}
 }

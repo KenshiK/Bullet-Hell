@@ -43,4 +43,9 @@ public class PathWaypoint : MonoBehaviour {
     {
         return waypoints;
     }
+
+    public Transform GetWaypointAtIndex(int i)
+    {
+        return waypoints[i];
+    }
 }
