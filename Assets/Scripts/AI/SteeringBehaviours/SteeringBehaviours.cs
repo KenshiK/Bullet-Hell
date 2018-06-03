@@ -16,7 +16,8 @@ public enum Deceleration { slow = 3, normal = 2, fast = 1 };
     cohesion = 1 << 5,
     separation = 1 << 6,
     allignment = 1 << 7,
-    obstacle_avoidance = 1 << 8,
+    //obstacle_avoidance = 1 << 8,
+    offset_pursuit = 1 << 8,
     wall_avoidance = 1 << 9,
     follow_path = 1 << 10,
     pursuit = 1 << 11,
@@ -24,7 +25,7 @@ public enum Deceleration { slow = 3, normal = 2, fast = 1 };
     interpose = 1 << 13,
     hide = 1 << 14,
     flock = 1 << 15,
-    offset_pursuit = 1 << 16,
+    //offset_pursuit = 1 << 16,
 };
 
 
@@ -225,6 +226,21 @@ public class SteeringBehaviours : MonoBehaviour
             return Arrive(Vehicle.GetCurrentWaypoint(), Vehicle.Deceleration);
         }
     }
+
+    private Vector3 OffsetPursuit()
+    {
+        if(Vehicle.leader != null)
+        {
+            Vector3 offset = Vehicle.leader.transform.position - Vehicle.offsetToLeader;
+            Vector3 toOffset = offset - transform.position;
+            float lookAheadTime = toOffset.magnitude / (Vehicle.MaxSpeed + Vehicle.leader.MaxSpeed);
+            return Arrive(offset + Vehicle.leader.RB.velocity * lookAheadTime, Deceleration.fast);
+        }
+        else
+        {
+            return Vector3.zero;
+        }
+    }
     #endregion
 
     private Vector3 CalculatePrioritized()
@@ -275,8 +291,14 @@ public class SteeringBehaviours : MonoBehaviour
 
         if (On(BehaviourType.pursuit))
         {
-
             force = Pursuit(Vehicle.target.GetComponent<Vehicle>()) * aiManager.SteeringSettings.PursuitWeight;
+
+            if (!AccumulateForce(force)) return steeringForce;
+        }
+
+        if (On(BehaviourType.offset_pursuit))
+        {
+            force = OffsetPursuit();
 
             if (!AccumulateForce(force)) return steeringForce;
         }
@@ -359,7 +381,7 @@ public class SteeringBehaviours : MonoBehaviour
     public void CohesionOn() { behaviours |= BehaviourType.cohesion; }
     public void SeparationOn() { behaviours |= BehaviourType.separation; }
     public void AlignmentOn() { behaviours |= BehaviourType.allignment; }
-    public void ObstacleAvoidanceOn() { behaviours |= BehaviourType.obstacle_avoidance; }
+   // public void ObstacleAvoidanceOn() { behaviours |= BehaviourType.obstacle_avoidance; }
     public void WallAvoidanceOn() { behaviours |= BehaviourType.wall_avoidance; }
     public void FollowPathOn() { behaviours |= BehaviourType.follow_path; }
     public void InterposeOn() { behaviours |= BehaviourType.interpose; }
@@ -376,7 +398,7 @@ public class SteeringBehaviours : MonoBehaviour
     void CohesionOff() { if (On(BehaviourType.cohesion)) behaviours ^= BehaviourType.cohesion; }
     void SeparationOff() { if (On(BehaviourType.separation)) behaviours ^= BehaviourType.separation; }
     void AlignmentOff() { if (On(BehaviourType.allignment)) behaviours ^= BehaviourType.allignment; }
-    void ObstacleAvoidanceOff() { if (On(BehaviourType.obstacle_avoidance)) behaviours ^= BehaviourType.obstacle_avoidance; }
+    //void ObstacleAvoidanceOff() { if (On(BehaviourType.obstacle_avoidance)) behaviours ^= BehaviourType.obstacle_avoidance; }
     void WallAvoidanceOff() { if (On(BehaviourType.wall_avoidance)) behaviours ^= BehaviourType.wall_avoidance; }
     void FollowPathOff() { if (On(BehaviourType.follow_path)) behaviours ^= BehaviourType.follow_path; }
     void InterposeOff() { if (On(BehaviourType.interpose)) behaviours ^= BehaviourType.interpose; }
@@ -393,7 +415,7 @@ public class SteeringBehaviours : MonoBehaviour
     public bool IsCohesionOn() { return On(BehaviourType.cohesion); }
     public bool IsSeparationOn() { return On(BehaviourType.separation); }
     public bool IsAlignmentOn() { return On(BehaviourType.allignment); }
-    public bool IsObstacleAvoidanceOn() { return On(BehaviourType.obstacle_avoidance); }
+    //public bool IsObstacleAvoidanceOn() { return On(BehaviourType.obstacle_avoidance); }
     public bool IsWallAvoidanceOn() { return On(BehaviourType.wall_avoidance); }
     public bool IsFollowPathOn() { return On(BehaviourType.follow_path); }
     public bool IsInterposeOn() { return On(BehaviourType.interpose); }

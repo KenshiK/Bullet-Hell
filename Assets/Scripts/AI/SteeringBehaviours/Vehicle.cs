@@ -5,6 +5,7 @@ using UnityEngine;
 public class Vehicle : MonoBehaviour {
 
     [SerializeField] private float _maxSpeed;
+    [SerializeField] private float _minSpeed;
     [SerializeField] private float _maxForce;
     [SerializeField] private Deceleration _deceleration;
     [SerializeField] private float _maxTurnRatePerSecond = 0;
@@ -19,6 +20,11 @@ public class Vehicle : MonoBehaviour {
     [SerializeField] private PathWaypoint _path;
     public bool loopPath;
     public bool reversePath;
+
+    [Header("Offset Pursuit Settings")]
+    public Vehicle leader;
+    public Vector3 offsetToLeader;
+
     private Transform currentWaypoint;
     private int waypointIndex = 0;
     public Deceleration Deceleration
@@ -55,11 +61,15 @@ public class Vehicle : MonoBehaviour {
 	void FixedUpdate () {
         if (!gameObject.CompareTag("Player"))
         {
-            if (target != null || Steering.IsWanderOn() || Steering.IsWallAvoidanceOn() || Steering.IsFollowPathOn())
-            {
+            /*if (target != null || Steering.IsWanderOn() || Steering.IsWallAvoidanceOn() || Steering.IsFollowPathOn())
+            {*/
                 Vector3 force = Steering.Calculate();
                 Vector3 acceleration = force / RB.mass;
                 RB.velocity += acceleration * Time.deltaTime;
+                if(RB.velocity.magnitude < _minSpeed)
+                {
+                    RB.velocity = RB.velocity.normalized * _minSpeed;
+                }
                 RB.velocity = Vector3.ClampMagnitude(RB.velocity, _maxSpeed);
                 if (_maxTurnRatePerSecond == 0)
                 {
@@ -82,11 +92,11 @@ public class Vehicle : MonoBehaviour {
                         transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, RB.velocity, step, 0.0F));
                     }
                 }
-            }
+            /*}
             else
             {
                 RB.velocity = Vector3.zero;
-            }
+            }*/
         }
     }
 
@@ -94,6 +104,13 @@ public class Vehicle : MonoBehaviour {
     {
         if(_path != null)
         {
+            if(currentWaypoint == null)
+            {
+                if (reversePath)
+                {
+                    waypointIndex = _path.GetPath().Count - 1;
+                }
+            }
             currentWaypoint = _path.GetWaypointAtIndex(waypointIndex);
             return currentWaypoint.position;
         }
