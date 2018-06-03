@@ -7,6 +7,10 @@ public class Spaceship : MonoBehaviour {
 
     #region DataNotToBeUsed
     [SerializeField] private int _health;
+
+    protected Collider col;
+
+    protected Vehicle vehicle;
     #endregion
 
     #region UsableData
@@ -22,7 +26,8 @@ public class Spaceship : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-		
+        col = GetComponent<Collider>();
+        vehicle = GetComponentInChildren<Vehicle>();
 	}
 	
 	// Update is called once per frame
@@ -38,6 +43,16 @@ public class Spaceship : MonoBehaviour {
     protected void Death()
     {
         Destroy(this.gameObject);
+    }
+
+    public Collider GetCollider()
+    {
+        return col;
+    }
+
+    public Vehicle GetVehicle()
+    {
+        return vehicle;
     }
 }
 

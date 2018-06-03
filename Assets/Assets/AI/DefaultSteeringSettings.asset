@@ -15,10 +15,10 @@ MonoBehaviour:
   DecelerationTweaker: 0.5
   SeparationWeight: 1
   AlignmentWeight: 1
-  CohesionWeight: 2
+  CohesionWeight: 1
   ObstacleAvoidanceWeight: 10
-  WallAvoidanceWeight: 40
-  WanderWeight: 1
+  WallAvoidanceWeight: 10
+  WanderWeight: 2
   SeekWeight: 1
   FleeWeight: 1
   ArriveWeight: 1

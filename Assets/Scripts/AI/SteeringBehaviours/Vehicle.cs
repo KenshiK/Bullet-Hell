@@ -27,6 +27,7 @@ public class Vehicle : MonoBehaviour {
 
     private Transform currentWaypoint;
     private int waypointIndex = 0;
+    private Spaceship spaceship;
     public Deceleration Deceleration
     {
         get
@@ -39,9 +40,11 @@ public class Vehicle : MonoBehaviour {
     // Use this for initialization
     void Start () {
         RB = GetComponent<Rigidbody>();
+        spaceship = GetComponent<Spaceship>();
         if(RB == null)
         {
             RB = transform.parent.GetComponent<Rigidbody>();
+            spaceship = transform.parent.GetComponent<Spaceship>();
         }
         if(!gameObject.CompareTag("Player"))
         {
@@ -61,42 +64,43 @@ public class Vehicle : MonoBehaviour {
 	void FixedUpdate () {
         if (!gameObject.CompareTag("Player"))
         {
-            /*if (target != null || Steering.IsWanderOn() || Steering.IsWallAvoidanceOn() || Steering.IsFollowPathOn())
-            {*/
-                Vector3 force = Steering.Calculate();
-                Vector3 acceleration = force / RB.mass;
-                RB.velocity += acceleration * Time.deltaTime;
-                if(RB.velocity.magnitude < _minSpeed)
+            Vector3 force = Steering.Calculate();
+            Vector3 acceleration = force / RB.mass;
+            RB.velocity += acceleration * Time.deltaTime;
+            if(RB.velocity.magnitude < _minSpeed)
+            {
+                RB.velocity = RB.velocity.normalized * _minSpeed;
+            }
+
+            RB.velocity = Vector3.ClampMagnitude(RB.velocity, _maxSpeed);
+            if (_maxTurnRatePerSecond == 0)
+            {
+                if (rotateParent && transform.parent.GetComponent<Spaceship>() != null)
                 {
-                    RB.velocity = RB.velocity.normalized * _minSpeed;
-                }
-                RB.velocity = Vector3.ClampMagnitude(RB.velocity, _maxSpeed);
-                if (_maxTurnRatePerSecond == 0)
-                {
-                    if (rotateParent && transform.parent.GetComponent<Spaceship>() != null)
-                    {
-                        transform.parent.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, RB.velocity, 500, 0.0F));
-                    }
-                    else
-                    {
-                        transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, RB.velocity, 500, 0.0F));
-                    }
-                    
+                    transform.parent.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, RB.velocity, 500, 0.0F));
                 }
                 else
                 {
-                    //buggy, to improve
-                    if(Vector3.Angle(RB.velocity.normalized, acceleration) > _maxTurnRatePerSecond)
+                    transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, RB.velocity, 500, 0.0F));
+                }
+                    
+            }
+            else
+            {
+                //buggy, to improve
+                if(Vector3.Angle(RB.velocity.normalized, acceleration) > _maxTurnRatePerSecond)
+                {
+                    float step = _maxTurnRatePerSecond * Mathf.Deg2Rad * Time.deltaTime;
+                    if (rotateParent && transform.parent.GetComponent<Spaceship>() != null)
                     {
-                        float step = _maxTurnRatePerSecond * Mathf.Deg2Rad * Time.deltaTime;
+                        transform.parent.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, RB.velocity, step, 0.0F));
+                    }
+                    else
+                    {
                         transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, RB.velocity, step, 0.0F));
                     }
                 }
-            /*}
-            else
-            {
-                RB.velocity = Vector3.zero;
-            }*/
+            }
         }
     }
 
@@ -219,5 +223,10 @@ public class Vehicle : MonoBehaviour {
         {
             return _turnAroundCoefficient;
         }
+    }
+
+    public Spaceship GetSpaceship()
+    {
+        return spaceship;
     }
 }

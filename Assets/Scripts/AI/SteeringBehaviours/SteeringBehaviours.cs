@@ -39,17 +39,30 @@ public class SteeringBehaviours : MonoBehaviour
     private Vector3[] feelers;
 
     public Vehicle Vehicle { set; get; }
+
+    [Header("Evade Settings")]
+    public Vehicle toEvade;
+    public Vehicle toPursue;
+
     [Header("Wander Settings")]
     public float wanderRadius;
     public float wanderDistance;
     public float wanderJitter;
+    public bool thirdDimension;
 
     [Header("Follow Paths Settings")]
     public float waypointSeekDistance = 2.0f;
 
+    [Header("Group Behaviours Settings")]
+    public float neighbourRange = 2.0f;
+    public int maxNeighbours = 20;
+    public LayerMask neighbourMask = 0;
+
+    private Collider[] neighbours;
+    public LayerMask obstacleLayer = 0;
     private float waypointSeekDistanceSqr;
     private Transform currentWaypoint;
-    public LayerMask obstacleLayer = 0;
+    private bool hasSpaceshipParent;
     [EnumFlag]
     [SerializeField] private BehaviourType behaviours;
     private void OnDrawGizmos()
@@ -60,8 +73,13 @@ public class SteeringBehaviours : MonoBehaviour
 
     private void Start()
     {
+        neighbours = new Collider[maxNeighbours];
         aiManager = AIManager.Instance;
         feelers = new Vector3[3];
+        if(transform.parent.GetComponent<Spaceship>() != null)
+        {
+            hasSpaceshipParent = true;
+        }
         if(obstacleLayer == 0)
         {
             obstacleLayer = LayerMask.GetMask("Obstacle");
@@ -77,6 +95,11 @@ public class SteeringBehaviours : MonoBehaviour
     public Vector3 Calculate()
     {
         steeringForce = Vector3.zero;
+        if(On(BehaviourType.allignment) || On(BehaviourType.cohesion) || On(BehaviourType.separation))
+        {
+            Array.Clear(neighbours, 0, neighbours.Length);
+            Physics.OverlapSphereNonAlloc(transform.position, neighbourRange, neighbours, neighbourMask);
+        }
         steeringForce = CalculatePrioritized();
         return steeringForce;
     }
@@ -144,7 +167,14 @@ public class SteeringBehaviours : MonoBehaviour
 
     private Vector3 Wander()
     {
-        wanderTarget += new Vector3(UnityEngine.Random.Range(-1f,1f) * wanderJitter, 0, UnityEngine.Random.Range(-1f, 1f) * wanderJitter);
+        if (!thirdDimension)
+        {
+            wanderTarget += new Vector3(UnityEngine.Random.Range(-1f, 1f) * wanderJitter, 0, UnityEngine.Random.Range(-1f, 1f) * wanderJitter);
+        }
+        else
+        {
+            wanderTarget += new Vector3(UnityEngine.Random.Range(-1f, 1f) * wanderJitter, UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f) * wanderJitter);
+        }
         wanderTarget = wanderTarget.normalized * wanderRadius;
 
         Vector3 targetLocal = wanderTarget + new Vector3(0, 0, wanderDistance);
@@ -184,13 +214,15 @@ public class SteeringBehaviours : MonoBehaviour
         {
             Vector3 overshoot = feelers[feelerIndex] - closestPoint;
             Vector3 minExtent = closestObstacle.bounds.min;
+            
             minExtent = new Vector3(minExtent.x, 0, minExtent.z);
             Vector3 maxExtent = closestObstacle.bounds.max;
             maxExtent = new Vector3(maxExtent.x, 0, maxExtent.z);
-
-            float dx = maxExtent.x - minExtent.x;
-            float dy = maxExtent.z - minExtent.z;
-            Vector3[] normals = { new Vector3(-dy, 0, dx) + closestObstacle.transform.position, new Vector3(dy, 0, -dx) + closestObstacle.transform.position };
+            //float diffX = maxExtent.x - minExtent.x;
+            //float diffZ = maxExtent.z - minExtent.z;
+            float dx = (maxExtent.x /*- diffX/2*/) - (minExtent.x /*+ diffX/2*/);
+            float dy = (maxExtent.z /*- diffZ/2*/) - (minExtent.z /*+ diffX/2*/);
+            Vector3[] normals = { new Vector3(-dy, transform.position.y, dx) + closestObstacle.transform.position, new Vector3(dy, transform.position.y, -dx) + closestObstacle.transform.position };
             Vector3 closestNormal = Vector3.zero;
             float closestNormalDist = float.MaxValue;
             for(int i = 0; i < normals.Length; i++)
@@ -198,12 +230,10 @@ public class SteeringBehaviours : MonoBehaviour
                 float dist = Vector3.Distance(normals[i], transform.position);
                 if ( dist < closestNormalDist)
                 {
-                    
                     closestNormal = normals[i];
                     closestNormalDist = dist;
                     
                 }
-                
             }
             force = (closestNormal - closestObstacle.transform.position).normalized * overshoot.magnitude;
         }
@@ -231,7 +261,7 @@ public class SteeringBehaviours : MonoBehaviour
     {
         if(Vehicle.leader != null)
         {
-            Vector3 offset = Vehicle.leader.transform.position - Vehicle.offsetToLeader;
+            Vector3 offset = (Vehicle.leader.transform.position - Vehicle.offsetToLeader);
             Vector3 toOffset = offset - transform.position;
             float lookAheadTime = toOffset.magnitude / (Vehicle.MaxSpeed + Vehicle.leader.MaxSpeed);
             return Arrive(offset + Vehicle.leader.RB.velocity * lookAheadTime, Deceleration.fast);
@@ -240,6 +270,66 @@ public class SteeringBehaviours : MonoBehaviour
         {
             return Vector3.zero;
         }
+    }
+
+    private Vector3 Separation()
+    {
+        Vector3 force = Vector3.zero;
+        
+        if(Vehicle.GetSpaceship().GetCollider() != null)
+        {
+            foreach (Collider col in neighbours)
+            {
+                if(col != Vehicle.GetSpaceship().GetCollider() && col != null)
+                {
+                    Vector3 toNeighbour = transform.position - col.transform.position;
+                    force += toNeighbour.normalized / toNeighbour.magnitude;
+                }
+            }
+        }
+        return force;
+    }
+
+    private Vector3 Alignment()
+    {
+        Vector3 averageHeading = Vector3.zero;
+        float neighboursCount = 0;
+        foreach (Collider col in neighbours)
+        {
+            if (col != Vehicle.GetSpaceship().GetCollider() && col != null)
+            {
+                averageHeading = col.GetComponent<Spaceship>().GetVehicle().RB.velocity.normalized;
+                neighboursCount++;
+            }
+        }
+
+        if(neighboursCount > 0)
+        {
+            averageHeading /= neighboursCount;
+            averageHeading -= Vehicle.RB.velocity.normalized;
+        }
+        return averageHeading;
+    }
+
+    private Vector3 Cohesion()
+    {
+        Vector3 centerOfMass = Vector3.zero;
+        Vector3 force = Vector3.zero;
+        float neighbourCount = 0;
+        foreach (Collider col in neighbours)
+        {
+            if (col != Vehicle.GetSpaceship().GetCollider() && col != null)
+            {
+                centerOfMass += col.transform.position;
+                neighbourCount++;
+            }
+        }
+        if(neighbourCount > 0)
+        {
+            centerOfMass /= neighbourCount;
+            force = Seek(centerOfMass);
+        }
+        return force;
     }
     #endregion
 
@@ -257,13 +347,41 @@ public class SteeringBehaviours : MonoBehaviour
 
         if (On(BehaviourType.evade))
         {
-            force = Evade(Vehicle.target) * aiManager.SteeringSettings.EvadeWeight;
+            force = Evade(toEvade) * aiManager.SteeringSettings.EvadeWeight;
             if (!AccumulateForce(force)) return steeringForce;
         }
 
         if (On(BehaviourType.flee))
         {
             force = Flee(Vehicle.target.transform.position) * aiManager.SteeringSettings.FleeWeight;
+
+            if (!AccumulateForce(force)) return steeringForce;
+        }
+
+        if (On(BehaviourType.wander))
+        {
+            force = Wander() * aiManager.SteeringSettings.WanderWeight;
+
+            if (!AccumulateForce(force)) return steeringForce;
+        }
+
+        if (On(BehaviourType.separation))
+        {
+            force = Separation() * aiManager.SteeringSettings.SeparationWeight;
+
+            if (!AccumulateForce(force)) return steeringForce;
+        }
+
+        if (On(BehaviourType.allignment))
+        {
+            force = Alignment() * aiManager.SteeringSettings.AlignmentWeight;
+
+            if (!AccumulateForce( force)) return steeringForce;
+        }
+
+        if (On(BehaviourType.cohesion))
+        {
+            force = Cohesion() * aiManager.SteeringSettings.CohesionWeight;
 
             if (!AccumulateForce(force)) return steeringForce;
         }
@@ -282,16 +400,11 @@ public class SteeringBehaviours : MonoBehaviour
             if (!AccumulateForce(force)) return steeringForce;
         }
 
-        if (On(BehaviourType.wander))
-        {
-            force = Wander() * aiManager.SteeringSettings.WanderWeight;
-
-            if (!AccumulateForce(force)) return steeringForce;
-        }
+        
 
         if (On(BehaviourType.pursuit))
         {
-            force = Pursuit(Vehicle.target.GetComponent<Vehicle>()) * aiManager.SteeringSettings.PursuitWeight;
+            force = Pursuit(toPursue) * aiManager.SteeringSettings.PursuitWeight;
 
             if (!AccumulateForce(force)) return steeringForce;
         }
@@ -346,15 +459,20 @@ public class SteeringBehaviours : MonoBehaviour
     private void CreateFeelers()
     {
         float feelerLength = aiManager.SteeringSettings.WallDetectionFeelerLength;
-        feelers[0] = transform.position + feelerLength * Vehicle.RB.velocity.normalized;
+        float scale = transform.localScale.z;
+        if (hasSpaceshipParent)
+        {
+            scale = transform.parent.localScale.z;
+        }
+        feelers[0] = transform.position + scale * feelerLength * Vehicle.RB.velocity.normalized;
 
         Vector3 temp = Vehicle.RB.velocity.normalized;
         temp = RotatePointAroundPivot(temp, Vector3.up, new Vector3(0, -45, 0));
-        feelers[1] = transform.position + feelerLength / 2f * temp;
+        feelers[1] = transform.position + scale * feelerLength / 2f * temp;
         
         temp = Vehicle.RB.velocity.normalized;
         temp = RotatePointAroundPivot(temp, Vector3.up, new Vector3(0, 45, 0));
-        feelers[2] = transform.position + feelerLength / 2f * temp;
+        feelers[2] = transform.position + scale * feelerLength / 2f * temp;
     }
 
     public Vector3  RotatePointAroundPivot(Vector3 point, Vector3 pivot, Vector3 angle){
@@ -372,12 +490,12 @@ public class SteeringBehaviours : MonoBehaviour
     }
 
         #region Behaviour setters
-        public void FleeOn() { behaviours |= BehaviourType.flee; }
+    public void FleeOn() { behaviours |= BehaviourType.flee; }
     public void SeekOn() { behaviours |= BehaviourType.seek; }
     public void ArriveOn() { behaviours |= BehaviourType.arrive; }
     public void WanderOn() { behaviours |= BehaviourType.wander; }
-    public void PursuitOn() { behaviours |= BehaviourType.pursuit;}
-    public void EvadeOn() { behaviours |= BehaviourType.evade;}
+    public void PursuitOn(Vehicle v) { toPursue = v;  behaviours |= BehaviourType.pursuit;}
+    public void EvadeOn(Vehicle v ) { toEvade = v; behaviours |= BehaviourType.evade;}
     public void CohesionOn() { behaviours |= BehaviourType.cohesion; }
     public void SeparationOn() { behaviours |= BehaviourType.separation; }
     public void AlignmentOn() { behaviours |= BehaviourType.allignment; }
