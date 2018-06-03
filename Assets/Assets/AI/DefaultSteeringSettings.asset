@@ -27,5 +27,5 @@ MonoBehaviour:
   InterposeWeight: 1
   HideWeight: 1
   EvadeWeight: 0.01
-  FollowPathWeight: 0.05
-  ArriveRadius: 0
+  FollowPathWeight: 0.7
+  ArriveRadius: 0.5

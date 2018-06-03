@@ -216,14 +216,14 @@ public class SteeringBehaviours : MonoBehaviour
             Vehicle.SetNextWaypoint();
         }
 
-        /*if (!Vehicle.PathFinished())
+        if (!Vehicle.PathFinished())
         {
             return Arrive(Vehicle.GetCurrentWaypoint(), Vehicle.Deceleration);
         }
         else
-        {*/
+        {
             return Arrive(Vehicle.GetCurrentWaypoint(), Vehicle.Deceleration);
-        //}
+        }
     }
     #endregion
 

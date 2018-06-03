@@ -276,13 +276,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a05d07b31f994444876d88b3c29d7d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxSpeed: 20
-  _maxForce: 20
+  _maxSpeed: 40
+  _maxForce: 40
   _deceleration: 2
   _maxTurnRatePerSecond: 0
   _turnAroundCoefficient: 0.5
   enemy: 1
+  rotateParent: 1
   pursuitMinDist: 5
+  _path: {fileID: 0}
+  loopPath: 1
   target: {fileID: 0}
 --- !u!114 &114171650665621334
 MonoBehaviour:
@@ -311,10 +314,11 @@ MonoBehaviour:
   wanderRadius: 2
   wanderDistance: 3
   wanderJitter: 2
+  waypointSeekDistance: 6
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 2048
-  behaviours: 512
+  behaviours: 1536
 --- !u!114 &114878611551674200
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -5,7 +5,6 @@ using UnityEngine;
 public class PathWaypoint : MonoBehaviour {
 
     [SerializeField] private List<Transform> waypoints;
-
     void Awake()
     {
         if(waypoints.Count == 0)
@@ -26,7 +25,7 @@ public class PathWaypoint : MonoBehaviour {
     {
         if(waypoints != null && waypoints.Count > 0)
         {
-            Vector3 startPos = transform.GetChild(0).position;
+            Vector3 startPos = waypoints[0].position;
             Vector3 previousPos = startPos;
             Gizmos.color = Color.yellow;
             for (int i = 0; i < waypoints.Count; i++)

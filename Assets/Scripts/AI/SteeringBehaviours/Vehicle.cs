@@ -11,15 +11,14 @@ public class Vehicle : MonoBehaviour {
     [SerializeField] private float _turnAroundCoefficient = 0.5f;
     public SteeringBehaviours Steering { get; private set; }
     public bool enemy = true;
-
+    public bool rotateParent = false;
     [Header("Pursuit Settings")]
     public float pursuitMinDist = 5f;
 
     [Header("Follow Path Settings")]
     [SerializeField] private PathWaypoint _path;
-    public float waypointSeekDistance = 2.0f;
     public bool loopPath;
-
+    public bool reversePath;
     private Transform currentWaypoint;
     private int waypointIndex = 0;
     public Deceleration Deceleration
@@ -64,7 +63,15 @@ public class Vehicle : MonoBehaviour {
                 RB.velocity = Vector3.ClampMagnitude(RB.velocity, _maxSpeed);
                 if (_maxTurnRatePerSecond == 0)
                 {
-                    transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, RB.velocity, 500, 0.0F));
+                    if (rotateParent && transform.parent.GetComponent<Spaceship>() != null)
+                    {
+                        transform.parent.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, RB.velocity, 500, 0.0F));
+                    }
+                    else
+                    {
+                        transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, RB.velocity, 500, 0.0F));
+                    }
+                    
                 }
                 else
                 {
@@ -102,19 +109,39 @@ public class Vehicle : MonoBehaviour {
     {
         if (_path != null)
         {
-            waypointIndex++;
-            if (waypointIndex >= _path.GetPath().Count)
+            if (reversePath)
             {
-                if (loopPath)
+                waypointIndex--;
+                if ((waypointIndex < 0))
                 {
-                    waypointIndex = 0;
-                    currentWaypoint = _path.GetWaypointAtIndex(waypointIndex);
-                }
-                else
-                {
-                    waypointIndex = _path.GetPath().Count;
+                    if (loopPath)
+                    {
+                        waypointIndex = _path.GetPath().Count - 1;
+                        currentWaypoint = _path.GetWaypointAtIndex(waypointIndex);
+                    }
+                    else
+                    {
+                        waypointIndex = 0;
+                    }
                 }
             }
+            else
+            {
+                waypointIndex++;
+                if ((waypointIndex >= _path.GetPath().Count))
+                {
+                    if (loopPath)
+                    {
+                        waypointIndex = 0;
+                        currentWaypoint = _path.GetWaypointAtIndex(waypointIndex);
+                    }
+                    else
+                    {
+                        waypointIndex = _path.GetPath().Count;
+                    }
+                }
+            }
+            
         }
         else
         {
