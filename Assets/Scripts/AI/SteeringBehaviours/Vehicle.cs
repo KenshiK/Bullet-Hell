@@ -75,7 +75,7 @@ public class Vehicle : MonoBehaviour {
             RB.velocity = Vector3.ClampMagnitude(RB.velocity, _maxSpeed);
             if (_maxTurnRatePerSecond == 0)
             {
-                if (rotateParent && transform.parent.GetComponent<Spaceship>() != null)
+                if (rotateParent /*&& transform.parent.GetComponent<Spaceship>() != null*/)
                 {
                     transform.parent.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, RB.velocity, 500, 0.0F));
                 }
@@ -83,7 +83,6 @@ public class Vehicle : MonoBehaviour {
                 {
                     transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, RB.velocity, 500, 0.0F));
                 }
-                    
             }
             else
             {

@@ -60,7 +60,6 @@ public class SteeringBehaviours : MonoBehaviour
 
     private Collider[] neighbours;
     public LayerMask obstacleLayer = 0;
-    private float waypointSeekDistanceSqr;
     private Transform currentWaypoint;
     private bool hasSpaceshipParent;
     [EnumFlag]
@@ -84,7 +83,6 @@ public class SteeringBehaviours : MonoBehaviour
         {
             obstacleLayer = LayerMask.GetMask("Obstacle");
         }
-        waypointSeekDistanceSqr = waypointSeekDistance * waypointSeekDistance;
     }
 
     private bool On(BehaviourType bt)    //returns true if a specified behaviour is activated
@@ -152,7 +150,7 @@ public class SteeringBehaviours : MonoBehaviour
 
         float lookAheadTime = toEvader.magnitude / (Vehicle.MaxSpeed + target.Speed);
 
-        lookAheadTime += TurnAroundTime();
+        lookAheadTime += TurnAroundTime(toPursue.transform.position);
 
         return Seek(target.transform.position + target.RB.velocity * lookAheadTime);
     }
@@ -481,9 +479,9 @@ public class SteeringBehaviours : MonoBehaviour
        point = dir + pivot; 
        return point;
     }
-    private float TurnAroundTime()
+    private float TurnAroundTime(Vector3 point)
     {
-        Vector3 toTarget = Vector3.Normalize(Vehicle.target.transform.position - transform.position);
+        Vector3 toTarget = Vector3.Normalize(point - transform.position);
         float dot = Vector3.Dot(Vehicle.RB.velocity.normalized, toTarget);
 
         return (dot - 1f) * - Vehicle.TurnAroundCoefficient;
@@ -510,19 +508,19 @@ public class SteeringBehaviours : MonoBehaviour
     public void FleeOff() { if (On(BehaviourType.flee)) behaviours ^= BehaviourType.flee; }
     public void SeekOff() { if (On(BehaviourType.seek)) behaviours ^= BehaviourType.seek; }
     public void ArriveOff() { if (On(BehaviourType.arrive)) behaviours ^= BehaviourType.arrive; }
-    void WanderOff() { if (On(BehaviourType.wander)) behaviours ^= BehaviourType.wander; }
-    void PursuitOff() { if (On(BehaviourType.pursuit)) behaviours ^= BehaviourType.pursuit; }
-    void EvadeOff() { if (On(BehaviourType.evade)) behaviours ^= BehaviourType.evade; }
-    void CohesionOff() { if (On(BehaviourType.cohesion)) behaviours ^= BehaviourType.cohesion; }
-    void SeparationOff() { if (On(BehaviourType.separation)) behaviours ^= BehaviourType.separation; }
-    void AlignmentOff() { if (On(BehaviourType.allignment)) behaviours ^= BehaviourType.allignment; }
+    public void WanderOff() { if (On(BehaviourType.wander)) behaviours ^= BehaviourType.wander; }
+    public void PursuitOff() { if (On(BehaviourType.pursuit)) behaviours ^= BehaviourType.pursuit; }
+    public void EvadeOff() { if (On(BehaviourType.evade)) behaviours ^= BehaviourType.evade; }
+    public void CohesionOff() { if (On(BehaviourType.cohesion)) behaviours ^= BehaviourType.cohesion; }
+    public void SeparationOff() { if (On(BehaviourType.separation)) behaviours ^= BehaviourType.separation; }
+    public void AlignmentOff() { if (On(BehaviourType.allignment)) behaviours ^= BehaviourType.allignment; }
     //void ObstacleAvoidanceOff() { if (On(BehaviourType.obstacle_avoidance)) behaviours ^= BehaviourType.obstacle_avoidance; }
-    void WallAvoidanceOff() { if (On(BehaviourType.wall_avoidance)) behaviours ^= BehaviourType.wall_avoidance; }
-    void FollowPathOff() { if (On(BehaviourType.follow_path)) behaviours ^= BehaviourType.follow_path; }
-    void InterposeOff() { if (On(BehaviourType.interpose)) behaviours ^= BehaviourType.interpose; }
-    void HideOff() { if (On(BehaviourType.hide)) behaviours ^= BehaviourType.hide; }
-    void OffsetPursuitOff() { if (On(BehaviourType.offset_pursuit)) behaviours ^= BehaviourType.offset_pursuit; }
-    void FlockingOff() { CohesionOff(); AlignmentOff(); SeparationOff(); WanderOff(); }
+    public void WallAvoidanceOff() { if (On(BehaviourType.wall_avoidance)) behaviours ^= BehaviourType.wall_avoidance; }
+    public void FollowPathOff() { if (On(BehaviourType.follow_path)) behaviours ^= BehaviourType.follow_path; }
+    public void InterposeOff() { if (On(BehaviourType.interpose)) behaviours ^= BehaviourType.interpose; }
+    public void HideOff() { if (On(BehaviourType.hide)) behaviours ^= BehaviourType.hide; }
+    public void OffsetPursuitOff() { if (On(BehaviourType.offset_pursuit)) behaviours ^= BehaviourType.offset_pursuit; }
+    public void FlockingOff() { CohesionOff(); AlignmentOff(); SeparationOff(); WanderOff(); }
 
     public bool IsFleeOn() { return On(BehaviourType.flee); }
     public bool IsSeekOn() { return On(BehaviourType.seek); }

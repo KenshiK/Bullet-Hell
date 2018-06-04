@@ -135,8 +135,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1506947719760574}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: -24.97}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalPosition: {x: 146.7, y: 0, z: -16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4451608662514762}
@@ -211,7 +211,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: e4675792eaccba34c97f3692f5b6beee, type: 2}
+  - {fileID: 2100000, guid: 66c0d76487e6f454e8ae053648bc45ef, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -277,10 +277,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offsetPursuit: {x: 0, y: 0, z: 0}
+  toEvade: {fileID: 0}
+  toPursue: {fileID: 0}
   wanderRadius: 2
   wanderDistance: 3
   wanderJitter: 1.5
+  thirdDimension: 0
   waypointSeekDistance: 2
+  neighbourRange: 2
+  maxNeighbours: 10
+  neighbourMask:
+    serializedVersion: 2
+    m_Bits: 0
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 2048
@@ -296,16 +304,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a05d07b31f994444876d88b3c29d7d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxSpeed: 20
-  _maxForce: 20
+  _maxSpeed: 10
+  _minSpeed: 0
+  _maxForce: 10
   _deceleration: 2
   _maxTurnRatePerSecond: 0
   _turnAroundCoefficient: 0.5
   enemy: 1
+  rotateParent: 0
   pursuitMinDist: 5
   _path: {fileID: 0}
-  waypointSeekDistance: 2
-  loopPath: 0
+  loopPath: 1
+  reversePath: 0
+  leader: {fileID: 0}
+  offsetToLeader: {x: 0, y: 0, z: 0}
   target: {fileID: 0}
 --- !u!114 &114206768145821310
 MonoBehaviour:

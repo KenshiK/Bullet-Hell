@@ -41,7 +41,7 @@ public class AIManager : MonoBehaviour {
 
     private Dictionary<string, float> steeringDictionary;
 
-
+    [SerializeField] private List<GameObject> currentEnemies;
     void Start () {
 	}
 	
@@ -49,11 +49,17 @@ public class AIManager : MonoBehaviour {
 	void Update () {
 		
 	}
+
     public SteeringSettings SteeringSettings
     {
         get
         {
             return _steeringSettings;
         }
+    }
+
+    public List<GameObject> GetCurrentEnemies()
+    {
+        return currentEnemies;
     }
 }

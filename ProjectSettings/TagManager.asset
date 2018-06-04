@@ -6,6 +6,7 @@ TagManager:
   tags:
   - BulletResetter
   - Enemy
+  - TargetTest
   layers:
   - Default
   - TransparentFX
@@ -19,7 +20,7 @@ TagManager:
   - Player
   - Enemy
   - Obstacle
-  - 
+  - PlayerMissile
   - 
   - 
   - 
