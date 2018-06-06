@@ -18,17 +18,23 @@ MonoBehaviour:
     - NoMat
     bulletTypeDuration: 20
   - bulletTags:
-    - NoMat
     - Bullet
+    - NoMat
     bulletTypeDuration: 20
-  bulletsPerArray: 3
+  bulletsPerArray: 1
+  offset: {x: 0, y: 0, z: 0}
+  spawnRadius: 5
+  origin: 0
   arrayBulletSpread: 240
   arraySpread: 180
-  origin: 0
-  spinSpeed: 10
+  aimAtPlayer: 0
+  spinSpeed: 50
   speedChange: 1
+  cycles: 5
   spinReversal: 1
   timeToLerp: 5
   maxSpinSpeed: 50
-  fireRate: 8
+  easeMode: 0
+  direction: 0
+  fireRate: 10
   bulletSpeed: 10

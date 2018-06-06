@@ -10,6 +10,7 @@ public class PatternSequencer : MonoBehaviour {
     [SerializeField] private bool sequencerReverseSpin;
     [SerializeField] private bool randomize = false;
 
+    private PlayerSpaceship player;
     private BulletPool bulletPool;
     private bool firing;
     private bool pauseSequencing = false;
@@ -35,6 +36,7 @@ public class PatternSequencer : MonoBehaviour {
             if (!firing && bulletPool != null)
             {
                 currentPattern = patternQueue.Dequeue();
+                player = PlayerSpaceship.Instance;
                 patternExecutionCoroutine = StartCoroutine(ExecutePattern(currentPattern));
             }
         }
@@ -56,14 +58,14 @@ public class PatternSequencer : MonoBehaviour {
         bool speedUp = true;
         bool reversal = false;
         int cycles = 0;
-
-        while(timer < pattern.timeToLive || pattern.timeToLive == 0)
+        
+        while (timer < pattern.timeToLive || pattern.timeToLive == 0)
         {
             rate = 1f / pattern.timeToLerp;
             speed = pattern.spinSpeed ;
             timeReference += rate * Time.deltaTime;
-
             
+
             #region Speed setup
             if (pattern.speedChange && pattern.timeToLerp > 0)
             {
@@ -74,8 +76,8 @@ public class PatternSequencer : MonoBehaviour {
                     timeReference = 0;
                     speedUp = !speedUp;
                     cycles++;
-                    //reverse every two cycle
-                    if (pattern.spinReversal && cycles % 2 == 0 && cycles > 0)
+                    //reverse every x cycles
+                    if (pattern.spinReversal && cycles % pattern.cycles == 0 && cycles > 0)
                     {
                         reversal = !reversal;
                     }
@@ -83,13 +85,36 @@ public class PatternSequencer : MonoBehaviour {
 
                 if (speedUp)
                 {
-                    speed = Easing.Sinusoidal.InOut(timeReference, pattern.spinSpeed, diff , 1);
+                    switch (pattern.easeMode)
+                    {
+                        case EaseMode.Sinusoidal:
+                            speed = Easing.Sinusoidal.InOut(timeReference, pattern.spinSpeed, diff, 1);
+                            break;
+                        case EaseMode.Quadratic:
+                            speed = Easing.Quadratic.InOut(timeReference, pattern.spinSpeed, diff, 1);
+                            break;
+                        case EaseMode.Linear:
+                            speed = Easing.Linear(timeReference, pattern.spinSpeed, diff, 1);
+                            break;
+                    }
+
                 }
                 else
                 {
-                    speed = Easing.Sinusoidal.InOut(timeReference, pattern.maxSpinSpeed, -diff, 1);
+                    switch (pattern.easeMode)
+                    {
+                        case EaseMode.Sinusoidal:
+                            speed = Easing.Sinusoidal.InOut(timeReference, pattern.maxSpinSpeed, -diff, 1);
+                            break;
+                        case EaseMode.Quadratic:
+                            speed = Easing.Quadratic.InOut(timeReference, pattern.maxSpinSpeed, -diff, 1);
+                            break;
+                        case EaseMode.Linear:
+                            speed = Easing.Linear(timeReference, pattern.maxSpinSpeed, -diff, 1);
+                            break;
+                    }
                 }
-                
+
                 if (reversal)
                 {
                     speed = -speed;
@@ -100,13 +125,31 @@ public class PatternSequencer : MonoBehaviour {
                 speed = -speed;
             }
             #endregion
-            
+
 
             //SpeedSetup(pattern, timeReference, speed, speedUp, cycles, reversal);
 
-            
+
             #region Position setup
-            origin = pattern.spinSpeed > 0f ? origin + (float)(pattern.origin + speed * Time.deltaTime) : (float)(pattern.origin + speed * Time.deltaTime);
+            if (pattern.aimAtPlayer)
+            {
+                Vector3 delta = transform.position - player.transform.position;
+                float angle = Mathf.Atan2(delta.z, delta.x);
+                origin = angle * Mathf.Rad2Deg;
+            }
+            else
+            {
+                if (pattern.direction == Direction.Counterclockwise)
+                {
+                    origin = pattern.spinSpeed > 0f ? origin + (float)(pattern.origin + speed * Time.deltaTime) : (float)(pattern.origin + speed * Time.deltaTime);
+                }
+                else
+                {
+                    origin = pattern.spinSpeed > 0f ? origin + (float)(pattern.origin - speed * Time.deltaTime) : (float)(pattern.origin - speed * Time.deltaTime);
+                }
+            }
+
+            
             int fireRate = pattern.fireRate == 0 ? 1 : pattern.fireRate;
             if (frameCounter % fireRate == 0)
             {
@@ -119,9 +162,12 @@ public class PatternSequencer : MonoBehaviour {
                     {
                         float firingAngle = origin + i * arrayAngle + j * bulletAngle;
                         Vector3 force = ComputeForce(firingAngle, pattern.bulletSpeed);
-                        GameObject bullet = bulletPool.SpawnFromPool(tag, transform.position, Quaternion.identity, gameObject.tag);
+                        Vector3 spawnPoint = transform.position - pattern.offset;
+                        spawnPoint += force.normalized * pattern.spawnRadius;
+                        GameObject bullet = bulletPool.SpawnFromPool(tag, spawnPoint, Quaternion.identity, gameObject.tag);
                         if (bullet != null)
                         {
+                            
                             bullet.transform.rotation = Quaternion.LookRotation(force);
                             bullet.GetComponent<Rigidbody>().velocity = force;
                         }
@@ -162,7 +208,7 @@ public class PatternSequencer : MonoBehaviour {
                 speedUp = !speedUp;
                 cycles++;
                 //reverse every two cycle
-                if (pattern.spinReversal && cycles % 2 == 0 && cycles > 0)
+                if (pattern.spinReversal && cycles % pattern.cycles == 0 && cycles > 0)
                 {
                     reversal = !reversal;
                 }
@@ -170,11 +216,34 @@ public class PatternSequencer : MonoBehaviour {
 
             if (speedUp)
             {
-                speed = Easing.Sinusoidal.InOut(timeReference, pattern.spinSpeed, diff, 1);
+                switch (pattern.easeMode)
+                {
+                    case EaseMode.Sinusoidal:
+                        speed = Easing.Sinusoidal.InOut(timeReference, pattern.spinSpeed, diff, 1);
+                        break;
+                    case EaseMode.Quadratic:
+                        speed = Easing.Quadratic.InOut(timeReference, pattern.spinSpeed, diff, 1);
+                        break;
+                    case EaseMode.Linear:
+                        speed = Easing.Linear(timeReference, pattern.spinSpeed, diff, 1);
+                        break;
+                }
+                
             }
             else
             {
-                speed = Easing.Sinusoidal.InOut(timeReference, pattern.maxSpinSpeed, -diff, 1);
+                switch (pattern.easeMode)
+                {
+                    case EaseMode.Sinusoidal:
+                        speed = Easing.Sinusoidal.InOut(timeReference, pattern.maxSpinSpeed, -diff, 1);
+                        break;
+                    case EaseMode.Quadratic:
+                        speed = Easing.Quadratic.InOut(timeReference, pattern.maxSpinSpeed, -diff, 1);
+                        break;
+                    case EaseMode.Linear:
+                        speed = Easing.Linear(timeReference, pattern.maxSpinSpeed, -diff, 1);
+                        break;
+                }
             }
 
             if (reversal)

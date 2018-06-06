@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class Easing {
 
-    public static float Linear(float k)
+    public static float Linear(float time, float start, float c, float duration)
     {
-        return k;
+        float t = time / duration;
+        return start + c  * t * t ;
     }
 
     public class Quadratic

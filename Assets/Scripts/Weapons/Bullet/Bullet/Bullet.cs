@@ -38,7 +38,7 @@ public class Bullet : MonoBehaviour {
     {
         if (other.tag.Equals("BulletResetter"))
         {
-            ReturnToPool(0);
+            StartCoroutine(ReturnToPool(0));
         }
         else if ( !other.tag.Equals(Parent) && (other.tag.Equals("Player") || other.tag.Equals("Enemy")) )
         {

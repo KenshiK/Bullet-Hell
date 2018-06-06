@@ -17,13 +17,17 @@ MonoBehaviour:
     - Bullet
     bulletTypeDuration: 1
   bulletsPerArray: 3
-  arrayBulletSpread: 180
+  arrayBulletSpread: 2
   arraySpread: 0
-  origin: 0
+  origin: 90
+  aimAtPlayer: 1
   spinSpeed: 0
   speedChange: 0
+  cycles: 0
   spinReversal: 0
   timeToLerp: 0
   maxSpinSpeed: 0
-  fireRate: 40
-  bulletSpeed: 3
+  easeMode: 0
+  direction: 0
+  fireRate: 10
+  bulletSpeed: 10
