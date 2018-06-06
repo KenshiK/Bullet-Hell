@@ -64,6 +64,7 @@ public class Missile : Bullet, IPooledObject {
         travelTrail.Stop();
         impact.Play();
         Target = null;
+        steering.PursuitOff();
         audioSource.PlayOneShot(collision);
         StartCoroutine(ReturnToPool(timeToPool));
     }

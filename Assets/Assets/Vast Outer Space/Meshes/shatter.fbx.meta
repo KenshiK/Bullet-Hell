@@ -1,0 +1,213 @@
+fileFormatVersion: 2
+guid: 3b2b0685630700745866146f7e8e12d7
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: Gas_Planet_A.003
+    100002: Gas_Planet_A.003_cell
+    100004: Gas_Planet_A.003_cell.001
+    100006: Gas_Planet_A.003_cell.002
+    100008: Gas_Planet_A.003_cell.003
+    100010: Gas_Planet_A.003_cell.006_cell.001
+    100012: Gas_Planet_A.003_cell.006_cell.002
+    100014: Gas_Planet_A.003_cell.006_cell.003
+    100016: Gas_Planet_A.003_cell.006_cell.004
+    100018: Gas_Planet_A.003_cell.006_cell.005
+    100020: Gas_Planet_A.003_cell.006_cell.006
+    100022: Gas_Planet_A.003_cell.006_cell.007
+    100024: Gas_Planet_A.003_cell.007_cell
+    100026: Gas_Planet_A.003_cell.007_cell.001
+    100028: Gas_Planet_A.003_cell.007_cell.002
+    100030: Gas_Planet_A.003_cell.007_cell.003
+    100032: Gas_Planet_A.003_cell.007_cell.004
+    100034: Gas_Planet_A.003_cell.007_cell.005
+    100036: Gas_Planet_A.003_cell.007_cell.006
+    100038: Gas_Planet_A.003_cell.007_cell.007
+    100040: Gas_Planet_A.003_cell.008
+    100042: Gas_Planet_A.003_cell.009
+    100044: Gas_Planet_A.003_cell.010
+    100046: Gas_Planet_A.003_cell.011
+    100048: Gas_Planets.002
+    100050: //RootNode
+    400000: Gas_Planet_A.003
+    400002: Gas_Planet_A.003_cell
+    400004: Gas_Planet_A.003_cell.001
+    400006: Gas_Planet_A.003_cell.002
+    400008: Gas_Planet_A.003_cell.003
+    400010: Gas_Planet_A.003_cell.006_cell.001
+    400012: Gas_Planet_A.003_cell.006_cell.002
+    400014: Gas_Planet_A.003_cell.006_cell.003
+    400016: Gas_Planet_A.003_cell.006_cell.004
+    400018: Gas_Planet_A.003_cell.006_cell.005
+    400020: Gas_Planet_A.003_cell.006_cell.006
+    400022: Gas_Planet_A.003_cell.006_cell.007
+    400024: Gas_Planet_A.003_cell.007_cell
+    400026: Gas_Planet_A.003_cell.007_cell.001
+    400028: Gas_Planet_A.003_cell.007_cell.002
+    400030: Gas_Planet_A.003_cell.007_cell.003
+    400032: Gas_Planet_A.003_cell.007_cell.004
+    400034: Gas_Planet_A.003_cell.007_cell.005
+    400036: Gas_Planet_A.003_cell.007_cell.006
+    400038: Gas_Planet_A.003_cell.007_cell.007
+    400040: Gas_Planet_A.003_cell.008
+    400042: Gas_Planet_A.003_cell.009
+    400044: Gas_Planet_A.003_cell.010
+    400046: Gas_Planet_A.003_cell.011
+    400048: Gas_Planets.002
+    400050: //RootNode
+    2100000: M_Gas_Planet_A.003
+    2100002: Interior
+    2300000: Gas_Planet_A.003
+    2300002: Gas_Planet_A.003_cell
+    2300004: Gas_Planet_A.003_cell.001
+    2300006: Gas_Planet_A.003_cell.002
+    2300008: Gas_Planet_A.003_cell.003
+    2300010: Gas_Planet_A.003_cell.006_cell.001
+    2300012: Gas_Planet_A.003_cell.006_cell.002
+    2300014: Gas_Planet_A.003_cell.006_cell.003
+    2300016: Gas_Planet_A.003_cell.006_cell.004
+    2300018: Gas_Planet_A.003_cell.006_cell.005
+    2300020: Gas_Planet_A.003_cell.006_cell.006
+    2300022: Gas_Planet_A.003_cell.006_cell.007
+    2300024: Gas_Planet_A.003_cell.007_cell
+    2300026: Gas_Planet_A.003_cell.007_cell.001
+    2300028: Gas_Planet_A.003_cell.007_cell.002
+    2300030: Gas_Planet_A.003_cell.007_cell.003
+    2300032: Gas_Planet_A.003_cell.007_cell.004
+    2300034: Gas_Planet_A.003_cell.007_cell.005
+    2300036: Gas_Planet_A.003_cell.007_cell.006
+    2300038: Gas_Planet_A.003_cell.007_cell.007
+    2300040: Gas_Planet_A.003_cell.008
+    2300042: Gas_Planet_A.003_cell.009
+    2300044: Gas_Planet_A.003_cell.010
+    2300046: Gas_Planet_A.003_cell.011
+    3300000: Gas_Planet_A.003
+    3300002: Gas_Planet_A.003_cell
+    3300004: Gas_Planet_A.003_cell.001
+    3300006: Gas_Planet_A.003_cell.002
+    3300008: Gas_Planet_A.003_cell.003
+    3300010: Gas_Planet_A.003_cell.006_cell.001
+    3300012: Gas_Planet_A.003_cell.006_cell.002
+    3300014: Gas_Planet_A.003_cell.006_cell.003
+    3300016: Gas_Planet_A.003_cell.006_cell.004
+    3300018: Gas_Planet_A.003_cell.006_cell.005
+    3300020: Gas_Planet_A.003_cell.006_cell.006
+    3300022: Gas_Planet_A.003_cell.006_cell.007
+    3300024: Gas_Planet_A.003_cell.007_cell
+    3300026: Gas_Planet_A.003_cell.007_cell.001
+    3300028: Gas_Planet_A.003_cell.007_cell.002
+    3300030: Gas_Planet_A.003_cell.007_cell.003
+    3300032: Gas_Planet_A.003_cell.007_cell.004
+    3300034: Gas_Planet_A.003_cell.007_cell.005
+    3300036: Gas_Planet_A.003_cell.007_cell.006
+    3300038: Gas_Planet_A.003_cell.007_cell.007
+    3300040: Gas_Planet_A.003_cell.008
+    3300042: Gas_Planet_A.003_cell.009
+    3300044: Gas_Planet_A.003_cell.010
+    3300046: Gas_Planet_A.003_cell.011
+    4300000: Gas_Planet_A.003
+    4300002: Gas_Planet_A.003_cell.011
+    4300004: Gas_Planet_A.003_cell.010
+    4300006: Gas_Planet_A.003_cell.009
+    4300008: Gas_Planet_A.003_cell.008
+    4300010: Gas_Planet_A.003_cell.003
+    4300012: Gas_Planet_A.003_cell.002
+    4300014: Gas_Planet_A.003_cell.001
+    4300016: Gas_Planet_A.003_cell
+    4300018: Gas_Planet_A.003_cell.006_cell.007
+    4300020: Gas_Planet_A.003_cell.006_cell.006
+    4300022: Gas_Planet_A.003_cell.006_cell.005
+    4300024: Gas_Planet_A.003_cell.006_cell.004
+    4300026: Gas_Planet_A.003_cell.006_cell.003
+    4300028: Gas_Planet_A.003_cell.006_cell.002
+    4300030: Gas_Planet_A.003_cell.006_cell.001
+    4300032: Gas_Planet_A.003_cell.007_cell.007
+    4300034: Gas_Planet_A.003_cell.007_cell.006
+    4300036: Gas_Planet_A.003_cell.007_cell.005
+    4300038: Gas_Planet_A.003_cell.007_cell.004
+    4300040: Gas_Planet_A.003_cell.007_cell.003
+    4300042: Gas_Planet_A.003_cell.007_cell.002
+    4300044: Gas_Planet_A.003_cell.007_cell.001
+    4300046: Gas_Planet_A.003_cell.007_cell
+    2186277476908879412: ImportLogs
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -10,7 +10,7 @@ public class AudioVolumeManager : MonoBehaviour {
 
     private static AudioVolumeManager instance;
     private float musicVolume = 0.75f;
-    private float soundEffectVolume = 0.75f;
+    private float soundEffectVolume = 0f;
     private float voiceVolume = 0.85f;
     private string fileName = "volumeData.dat";
     [NonSerialized] public AudioSource ouroborosAudioSource;
@@ -136,7 +136,7 @@ public class AudioVolumeManager : MonoBehaviour {
     
     private void OnEnable()
     {
-        Load();
+        /*Load();
         foreach (Sound m in themes)
         {
             m.source = gameObject.AddComponent<AudioSource>();
@@ -157,12 +157,12 @@ public class AudioVolumeManager : MonoBehaviour {
             s.source.pitch = s.pitch;
             s.source.volume = soundEffectVolume;
             s.source.spatialBlend = 0.0f;
-        }
+        }*/
     }
 
     private void OnDisable()
     {
-        Save();
+        //Save();
     }
 
     public float MusicVolume
