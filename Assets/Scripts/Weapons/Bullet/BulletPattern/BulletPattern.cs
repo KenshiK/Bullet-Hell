@@ -27,7 +27,7 @@ public class BulletPattern : ScriptableObject {
     public float arraySpread;
     
     public bool aimAtPlayer;
-
+    public bool straightShot;
     [Header("Speed & Spin Settings")]
     public float spinSpeed;
     public bool speedChange;

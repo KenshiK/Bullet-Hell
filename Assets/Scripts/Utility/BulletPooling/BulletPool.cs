@@ -74,6 +74,25 @@ public class BulletPool : MonoBehaviour {
         return obj;
     }
 
+    public GameObject SpawnFromPool(string tag, Vector3 position, Quaternion rotation)
+    {
+        if (!poolDictionnary.ContainsKey(tag))
+        {
+            Debug.LogError("[BulletPool]:: " + tag + " not found");
+            return null;
+        }
+
+        GameObject obj = poolDictionnary[tag].Dequeue();
+        obj.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        obj.transform.position = position;
+        obj.transform.rotation = rotation;
+        obj.SetActive(true);
+
+        poolDictionnary[tag].Enqueue(obj);
+
+        return obj;
+    }
+
     public int GetActiveBullets()
     {
         int bullets = 0;

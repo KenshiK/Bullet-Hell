@@ -112,6 +112,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdf400faa2e5606449d833ca35f55da3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  acceleration: 0
+  angleAcceleration: 1.45
+  maxSpeed: 50
+  useMaxSpeed: 1
+  minSpeed: 0
+  useMinSpeed: 0
+  usePauseAndResume: 1
+  pauseTime: 1
+  resumeTime: 1
 --- !u!136 &136600463883716638
 CapsuleCollider:
   m_ObjectHideFlags: 1

@@ -3176,7 +3176,7 @@ Prefab:
         type: 2}
       propertyPath: bulletPatterns.Array.data[0]
       value: 
-      objectReference: {fileID: 11400000, guid: 4b7119797b9077749864a9ecc88f4e06,
+      objectReference: {fileID: 11400000, guid: 9320ea6826b601a43bc4bccc3983bfdc,
         type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 971280cbaa32f354fbb77c86f5af7f3d, type: 2}
@@ -3520,8 +3520,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 772404552}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -108.5, y: 60.9, z: -155}
+  m_LocalRotation: {x: -0.6713002, y: 0.0043883454, z: -0.003972216, w: -0.741162}
+  m_LocalPosition: {x: -69.41475, y: 49.909416, z: -307.4021}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -8633,6 +8633,10 @@ Prefab:
     - target: {fileID: 4148522960701714, guid: cfd453e0e5906d840ac830dec5ef0f3f, type: 2}
       propertyPath: m_LocalScale.z
       value: 2.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1945116319102264, guid: cfd453e0e5906d840ac830dec5ef0f3f, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cfd453e0e5906d840ac830dec5ef0f3f, type: 2}

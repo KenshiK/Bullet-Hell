@@ -15,8 +15,8 @@ public class BulletPatternEditor : Editor {
     private SerializedProperty maxSpinSpeed;
     private SerializedProperty direction;
     private SerializedProperty easeMode;
-    private SerializedProperty straightShot;
     private SerializedProperty aimAtPlayer;
+    private SerializedProperty straightShot;
     private SerializedProperty offset;
 
     private Dictionary<string, SerializedProperty> positiveProperties;
@@ -33,7 +33,7 @@ public class BulletPatternEditor : Editor {
         easeMode = m_Object.FindProperty("easeMode");
         aimAtPlayer = m_Object.FindProperty("aimAtPlayer");
         offset = m_Object.FindProperty("offset");
-
+        straightShot = m_Object.FindProperty("straightShot");
         positiveProperties.Add("timeToLive", m_Object.FindProperty("timeToLive"));
         positiveProperties.Add("bulletsPerArray", m_Object.FindProperty("bulletsPerArray"));
         positiveProperties.Add("origin", m_Object.FindProperty("origin"));
@@ -71,8 +71,8 @@ public class BulletPatternEditor : Editor {
         GUILayout.Label("Array Spread");
         positiveProperties["arraySpread"].floatValue = EditorGUILayout.Slider(positiveProperties["arraySpread"].floatValue, 0, 360);
 
-        
 
+        EditorGUILayout.PropertyField(straightShot);
         EditorGUILayout.PropertyField(positiveProperties["spinSpeed"]);
 
         

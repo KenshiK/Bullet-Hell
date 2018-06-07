@@ -41,7 +41,7 @@ public class MissileLauncher : MonoBehaviour {
             {
                 for(int i = 0; i < missilesPerTarget; i++)
                 {
-                    GameObject obj = bulletPool.SpawnFromPool(missileTag, transform.position, Quaternion.identity, "Player");
+                    GameObject obj = bulletPool.SpawnFromPool(missileTag, transform.position, Quaternion.identity);
                     Missile mis = obj.GetComponentInChildren<Missile>();
                     IPooledObject iPooled = mis.GetComponent<IPooledObject>();
                     if (iPooled != null)

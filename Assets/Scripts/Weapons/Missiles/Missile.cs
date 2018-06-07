@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Missile : Bullet, IPooledObject {
+public class Missile : MonoBehaviour, IPooledObject {
     
     [SerializeField] private ParticleSystem travelTrail;
     [SerializeField] private ParticleSystem impact;
@@ -11,6 +11,7 @@ public class Missile : Bullet, IPooledObject {
     [SerializeField] private float timeToLive = 60.0f;
     [SerializeField] private float horizontalForce;
     [SerializeField] private float verticalForce;
+
     [Header("Sound Effects")]
     [SerializeField] AudioClip ejecting;
     [SerializeField] AudioClip ignition;
@@ -23,6 +24,7 @@ public class Missile : Bullet, IPooledObject {
     private float timer = 0f;
     
     private AudioSource audioSource;
+    private Rigidbody rb; 
     public Vehicle Target { get; set; }
 
     private void Start()
@@ -36,25 +38,33 @@ public class Missile : Bullet, IPooledObject {
 
     private void Update()
     {
-        if(timer > timeBeforePursuit && Target != null && !steering.IsPursuitOn())
+        if(Target == null)
         {
-            rb.useGravity = false;
-            audioSource.PlayOneShot(ignition);
-            steering.PursuitOn(Target);
-            travelTrail.Play();
+            steering.PursuitOff();
+            StartCoroutine(ReturnToPool(10));
         }
+        else
+        {
+            if (timer > timeBeforePursuit && Target != null && !steering.IsPursuitOn())
+            {
+                rb.useGravity = false;
+                audioSource.PlayOneShot(ignition);
+                steering.PursuitOn(Target);
+                travelTrail.Play();
+            }
 
-        if(timer > timeToLive)
-        {
-            meshRenderer.enabled = false;
-            col.enabled = false;
-            travelTrail.Stop();
-            impact.Play();
-            Target = null;
-            audioSource.PlayOneShot(collision);
-            StartCoroutine(ReturnToPool(0));
+            if (timer > timeToLive)
+            {
+                meshRenderer.enabled = false;
+                col.enabled = false;
+                travelTrail.Stop();
+                impact.Play();
+                Target = null;
+                audioSource.PlayOneShot(collision);
+                StartCoroutine(ReturnToPool(0));
+            }
+            timer += Time.deltaTime;
         }
-        timer += Time.deltaTime;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -96,5 +106,12 @@ public class Missile : Bullet, IPooledObject {
         transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, rb.velocity, 500, 0.0F));
     }
 
-
+    private IEnumerator ReturnToPool(float timetoReturn)
+    {
+        rb.velocity = Vector3.zero;
+        rb.useGravity = false;
+        yield return new WaitForSeconds(timetoReturn);
+        transform.position = transform.parent.position;
+        gameObject.SetActive(false);
+    }
 }

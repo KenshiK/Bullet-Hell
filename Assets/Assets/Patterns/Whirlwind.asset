@@ -28,6 +28,7 @@ MonoBehaviour:
   arrayBulletSpread: 240
   arraySpread: 180
   aimAtPlayer: 0
+  straightShot: 0
   spinSpeed: 50
   speedChange: 1
   cycles: 5

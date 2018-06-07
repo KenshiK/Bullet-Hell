@@ -11,16 +11,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 069ae646abb781a41bdaa8a5ca100fdf, type: 3}
   m_Name: Simple_Slow
   m_EditorClassIdentifier: 
-  timeToLive: 10
+  timeToLive: 1
   bulletArrays:
   - bulletTags:
     - Bullet
-    bulletTypeDuration: 1
+    bulletTypeDuration: 10
+  - bulletTags:
+    - NoMat
+    bulletTypeDuration: 10
   bulletsPerArray: 3
-  arrayBulletSpread: 2
-  arraySpread: 0
+  offset: {x: 0, y: 0, z: 0}
+  spawnRadius: 0
   origin: 90
-  aimAtPlayer: 1
+  arrayBulletSpread: 5
+  arraySpread: 1
+  aimAtPlayer: 0
+  straightShot: 1
   spinSpeed: 0
   speedChange: 0
   cycles: 0
@@ -29,5 +35,5 @@ MonoBehaviour:
   maxSpinSpeed: 0
   easeMode: 0
   direction: 0
-  fireRate: 10
-  bulletSpeed: 10
+  fireRate: 50
+  bulletSpeed: 1
