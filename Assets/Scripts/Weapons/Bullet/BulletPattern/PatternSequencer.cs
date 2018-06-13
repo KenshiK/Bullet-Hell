@@ -51,16 +51,23 @@ public class PatternSequencer : MonoBehaviour {
         firing = true;
         int frameCounter = 0;
         float timer = 0f;
-        float origin = 0f;
+        float origin = pattern.origin;
         float timeReference = 0f;
         float rate;
         float speed;
         bool speedUp = true;
         bool reversal = false;
         int cycles = 0;
-        
+        float bulletAngle;
+        float arrayAngle;
+        float firingAngle;
+        string tag;
+        Vector3 force;
+        GameObject bullet;
+
         while (timer < pattern.timeToLive || pattern.timeToLive == 0)
         {
+            int fireRate = pattern.fireRate == 0 ? 1 : pattern.fireRate;
             rate = 1f / pattern.timeToLerp;
             speed = pattern.spinSpeed ;
             timeReference += rate * Time.deltaTime;
@@ -77,7 +84,7 @@ public class PatternSequencer : MonoBehaviour {
                     speedUp = !speedUp;
                     cycles++;
                     //reverse every x cycles
-                    if (pattern.spinReversal && cycles % pattern.cycles == 0 && cycles > 0)
+                    if (pattern.spinReversal && cycles > 0 && cycles % pattern.cycles == 0 )
                     {
                         reversal = !reversal;
                     }
@@ -139,32 +146,40 @@ public class PatternSequencer : MonoBehaviour {
             }
             else
             {
-                if (pattern.direction == Direction.Counterclockwise)
+                if(pattern.spinSpeed > 0f)
                 {
-                    origin = pattern.spinSpeed > 0f ? origin + (float)(pattern.origin + speed * Time.deltaTime) : (float)(pattern.origin + speed * Time.deltaTime);
+                    if (pattern.direction == Direction.Counterclockwise)
+                    {
+                        origin += speed * Time.deltaTime ;
+                    }
+                    else
+                    {
+                        origin += -speed * Time.deltaTime ;
+                    }
                 }
                 else
                 {
-                    origin = pattern.spinSpeed > 0f ? origin + (float)(pattern.origin - speed * Time.deltaTime) : (float)(pattern.origin - speed * Time.deltaTime);
+                    origin = pattern.origin;
                 }
+                
             }
-
             
-            int fireRate = pattern.fireRate == 0 ? 1 : pattern.fireRate;
+            
             if (frameCounter % fireRate == 0)
             {
-                for(int i = 0; i < pattern.bulletArrays.Count; ++i)
+                bulletAngle = pattern.bulletsPerArray > 2 ? pattern.arrayBulletSpread / (pattern.bulletsPerArray - 1) : pattern.arrayBulletSpread;
+                arrayAngle = pattern.bulletArrays.Count > 2 ? pattern.arraySpread / (pattern.bulletArrays.Count - 1) : pattern.arraySpread;
+                for (int i = 0; i < pattern.bulletArrays.Count; ++i)
                 {
-                    string tag = GetCurrentBulletTag(pattern.bulletArrays[i], frameCounter);
-                    float bulletAngle = pattern.bulletsPerArray > 2 ? pattern.arrayBulletSpread / (pattern.bulletsPerArray - 1) : pattern.arrayBulletSpread;
-                    float arrayAngle = pattern.bulletArrays.Count > 2 ? pattern.arraySpread / (pattern.bulletArrays.Count - 1) : pattern.arraySpread;
+                    tag = GetCurrentBulletTag(pattern.bulletArrays[i], frameCounter);
+                    
                     for (int j = 0; j < pattern.bulletsPerArray; ++j)
                     {
-                        float firingAngle = origin + i * arrayAngle + j * bulletAngle;
-                        Vector3 force = ComputeForce(firingAngle, pattern.bulletSpeed);
+                        firingAngle = origin + i * arrayAngle + j * bulletAngle;
+                        force = ComputeForce(firingAngle, pattern.bulletSpeed);
                         Vector3 spawnPoint = transform.position - pattern.offset;
                         spawnPoint += force.normalized * pattern.spawnRadius;
-                        GameObject bullet = bulletPool.SpawnFromPool(tag, spawnPoint, Quaternion.identity, gameObject.tag);
+                        bullet = bulletPool.SpawnFromPool(tag, spawnPoint, Quaternion.identity, gameObject.tag);
                         if (bullet != null)
                         {
                             
@@ -196,98 +211,97 @@ public class PatternSequencer : MonoBehaviour {
         }
     }
 
-    private void SpeedSetup(BulletPattern pattern, float timeReference, float speed, bool speedUp, int cycles, bool reversal)
-    {
-        if (pattern.speedChange && pattern.timeToLerp > 0)
-        {
-            float diff = pattern.maxSpinSpeed - pattern.spinSpeed;
+    #region Refactoring
+    /* private void SpeedSetup(BulletPattern pattern, float timeReference, float speed, bool speedUp, int cycles, bool reversal)
+     {
+         if (pattern.speedChange && pattern.timeToLerp > 0)
+         {
+             float diff = pattern.maxSpinSpeed - pattern.spinSpeed;
 
-            if (timeReference > 1)
-            {
-                timeReference = 0;
-                speedUp = !speedUp;
-                cycles++;
-                //reverse every two cycle
-                if (pattern.spinReversal && cycles % pattern.cycles == 0 && cycles > 0)
-                {
-                    reversal = !reversal;
-                }
-            }
+             if (timeReference > 1)
+             {
+                 timeReference = 0;
+                 speedUp = !speedUp;
+                 cycles++;
+                 //reverse every x cycles
+                 if (pattern.spinReversal && cycles % pattern.cycles == 0 && cycles > 0)
+                 {
+                     reversal = !reversal;
+                 }
+             }
 
-            if (speedUp)
-            {
-                switch (pattern.easeMode)
-                {
-                    case EaseMode.Sinusoidal:
-                        speed = Easing.Sinusoidal.InOut(timeReference, pattern.spinSpeed, diff, 1);
-                        break;
-                    case EaseMode.Quadratic:
-                        speed = Easing.Quadratic.InOut(timeReference, pattern.spinSpeed, diff, 1);
-                        break;
-                    case EaseMode.Linear:
-                        speed = Easing.Linear(timeReference, pattern.spinSpeed, diff, 1);
-                        break;
-                }
-                
-            }
-            else
-            {
-                switch (pattern.easeMode)
-                {
-                    case EaseMode.Sinusoidal:
-                        speed = Easing.Sinusoidal.InOut(timeReference, pattern.maxSpinSpeed, -diff, 1);
-                        break;
-                    case EaseMode.Quadratic:
-                        speed = Easing.Quadratic.InOut(timeReference, pattern.maxSpinSpeed, -diff, 1);
-                        break;
-                    case EaseMode.Linear:
-                        speed = Easing.Linear(timeReference, pattern.maxSpinSpeed, -diff, 1);
-                        break;
-                }
-            }
+             if (speedUp)
+             {
+                 switch (pattern.easeMode)
+                 {
+                     case EaseMode.Sinusoidal:
+                         speed = Easing.Sinusoidal.InOut(timeReference, pattern.spinSpeed, diff, 1);
+                         break;
+                     case EaseMode.Quadratic:
+                         speed = Easing.Quadratic.InOut(timeReference, pattern.spinSpeed, diff, 1);
+                         break;
+                     case EaseMode.Linear:
+                         speed = Easing.Linear(timeReference, pattern.spinSpeed, diff, 1);
+                         break;
+                 }
 
-            if (reversal)
-            {
-                speed = -speed;
-            }
-        }
-        if (sequencerReverseSpin)
-        {
-            speed = -speed;
-        }
-    }
+             }
+             else
+             {
+                 switch (pattern.easeMode)
+                 {
+                     case EaseMode.Sinusoidal:
+                         speed = Easing.Sinusoidal.InOut(timeReference, pattern.maxSpinSpeed, -diff, 1);
+                         break;
+                     case EaseMode.Quadratic:
+                         speed = Easing.Quadratic.InOut(timeReference, pattern.maxSpinSpeed, -diff, 1);
+                         break;
+                     case EaseMode.Linear:
+                         speed = Easing.Linear(timeReference, pattern.maxSpinSpeed, -diff, 1);
+                         break;
+                 }
+             }
 
-    private void PositionSetup(BulletPattern pattern, float origin, float speed, int frameCounter)
-    {
-        int fireRate = pattern.fireRate == 0 ? 1 : pattern.fireRate;
+             if (reversal)
+             {
+                 speed = -speed;
+             }
+         }
+         if (sequencerReverseSpin)
+         {
+             speed = -speed;
+         }
+     }
 
-        origin = pattern.spinSpeed > 0f ? origin + (float)(pattern.origin + speed * Time.deltaTime) : (float)(pattern.origin + speed * Time.deltaTime);
+     private void PositionSetup(BulletPattern pattern, float origin, float speed, int frameCounter)
+     {
+         int fireRate = pattern.fireRate == 0 ? 1 : pattern.fireRate;
 
-        if (frameCounter % fireRate == 0)
-        {
-            float firingAngle, bulletAngle, arrayAngle;
-            string tag;
-            Vector3 force;
-            GameObject bullet;
-            for (int i = 0; i < pattern.bulletArrays.Count; ++i)
-            {
-                tag = GetCurrentBulletTag(pattern.bulletArrays[i], frameCounter);
-                bulletAngle = pattern.bulletsPerArray > 2 ? pattern.arrayBulletSpread / (pattern.bulletsPerArray - 1) : pattern.arrayBulletSpread;
-                arrayAngle = pattern.bulletArrays.Count > 2 ? pattern.arraySpread / (pattern.bulletArrays.Count - 1) : pattern.arraySpread;
-                for (int j = 0; j < pattern.bulletsPerArray; ++j)
-                {
-                    firingAngle = origin + i * arrayAngle + j * bulletAngle;
-                    force = ComputeForce(firingAngle, pattern.bulletSpeed);
-                    bullet = bulletPool.SpawnFromPool(tag, transform.position, Quaternion.identity, gameObject.tag);
-                    if (bullet != null)
-                    {
-                        bullet.transform.rotation = Quaternion.LookRotation(force);
-                        bullet.GetComponent<Rigidbody>().velocity = force;
-                    }
-                }
-            }
-        }
-    }
+         origin = pattern.spinSpeed > 0f ? origin + (float)(pattern.origin + speed * Time.deltaTime) : (float)(pattern.origin + speed * Time.deltaTime);
+
+         if (frameCounter % fireRate == 0)
+         {
+
+             for (int i = 0; i < pattern.bulletArrays.Count; ++i)
+             {
+                 tag = GetCurrentBulletTag(pattern.bulletArrays[i], frameCounter);
+                 bulletAngle = pattern.bulletsPerArray > 2 ? pattern.arrayBulletSpread / (pattern.bulletsPerArray - 1) : pattern.arrayBulletSpread;
+                 arrayAngle = pattern.bulletArrays.Count > 2 ? pattern.arraySpread / (pattern.bulletArrays.Count - 1) : pattern.arraySpread;
+                 for (int j = 0; j < pattern.bulletsPerArray; ++j)
+                 {
+                     firingAngle = origin + i * arrayAngle + j * bulletAngle;
+                     force = ComputeForce(firingAngle, pattern.bulletSpeed);
+                     bullet = bulletPool.SpawnFromPool(tag, transform.position, Quaternion.identity, gameObject.tag);
+                     if (bullet != null)
+                     {
+                         bullet.transform.rotation = Quaternion.LookRotation(force);
+                         bullet.GetComponent<Rigidbody>().velocity = force;
+                     }
+                 }
+             }
+         }
+     }*/
+    #endregion
 
     private Vector3 ComputeForce(float angle, float speed)
     {

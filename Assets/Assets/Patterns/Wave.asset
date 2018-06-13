@@ -9,31 +9,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 069ae646abb781a41bdaa8a5ca100fdf, type: 3}
-  m_Name: Simple_Slow
+  m_Name: Wave
   m_EditorClassIdentifier: 
-  timeToLive: 1
+  timeToLive: 0
   bulletArrays:
   - bulletTags:
     - Bullet
-    bulletTypeDuration: 10
-  - bulletTags:
-    - NoMat
-    bulletTypeDuration: 10
-  bulletsPerArray: 3
+    bulletTypeDuration: 0
+  bulletsPerArray: 1
   offset: {x: 0, y: 0, z: 0}
-  spawnRadius: 0
-  origin: 90
-  arrayBulletSpread: 5
-  arraySpread: 1
+  spawnRadius: 2.2
+  origin: 45
+  arrayBulletSpread: 0
+  arraySpread: 0
   aimAtPlayer: 0
-  straightShot: 1
-  spinSpeed: 0
+  straightShot: 0
+  spinSpeed: 10
   speedChange: 0
-  cycles: 0
-  spinReversal: 0
-  timeToLerp: 0
-  maxSpinSpeed: 0
+  cycles: 1
+  spinReversal: 1
+  timeToLerp: 3
+  maxSpinSpeed: 100
   easeMode: 0
   direction: 0
-  fireRate: 50
-  bulletSpeed: 5
+  fireRate: 1
+  bulletSpeed: 10

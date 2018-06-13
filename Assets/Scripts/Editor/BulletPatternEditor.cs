@@ -81,6 +81,10 @@ public class BulletPatternEditor : Editor {
         {
             EditorGUILayout.PropertyField(aimAtPlayer);
         }
+        else
+        {
+            aimAtPlayer.boolValue = false;
+        }
         if (speedChange.boolValue == true)
         {
             EditorGUILayout.PropertyField(positiveProperties["timeToLerp"]);

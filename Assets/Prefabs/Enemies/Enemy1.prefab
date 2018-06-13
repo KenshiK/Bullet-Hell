@@ -40,9 +40,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1390912162019256}
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 20}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: -5.3, y: 0, z: 2.6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -129,19 +129,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8561bcaa1c7480c428188642031c8855, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  offsetPursuit: {x: 0, y: 0, z: 0}
+  toEvade: {fileID: 0}
+  toPursue: {fileID: 0}
+  wanderRadius: 0
+  wanderDistance: 0
+  wanderJitter: 0
+  thirdDimension: 0
+  waypointSeekDistance: 2
+  neighbourRange: 2
+  maxNeighbours: 20
+  neighbourMask:
+    serializedVersion: 2
+    m_Bits: 0
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  behaviours: 0
 --- !u!114 &114333528267328462
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1390912162019256}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0c9e467711d1cc43ac060d51936fbb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPatterns:
-  - {fileID: 11400000, guid: 4b7119797b9077749864a9ecc88f4e06, type: 2}
+  - {fileID: 11400000, guid: d20c067ef5db0304e8122ee245a9d196, type: 2}
   patternTimeInterval: 0
   Player: 0
   sequencerReverseSpin: 0
@@ -158,8 +175,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxSpeed: 10
+  _minSpeed: 0
   _maxForce: 10
   _deceleration: 2
+  _maxTurnRatePerSecond: 0
+  _turnAroundCoefficient: 0.5
+  enemy: 1
+  rotateParent: 0
+  pursuitMinDist: 5
+  _path: {fileID: 0}
+  loopPath: 0
+  reversePath: 0
+  leader: {fileID: 0}
+  offsetToLeader: {x: 0, y: 0, z: 0}
   target: {fileID: 0}
 --- !u!114 &114754854523773962
 MonoBehaviour:

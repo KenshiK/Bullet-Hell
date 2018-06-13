@@ -49,8 +49,10 @@ public class Bullet : MonoBehaviour, IPooledObject
         {
             rb.velocity = Vector3.ClampMagnitude(rb.velocity, minSpeed);
         }
-        transform.rotation = Quaternion.LookRotation(rb.velocity);
-        
+        if(rb.velocity != Vector3.zero)
+        {
+            transform.rotation = Quaternion.LookRotation(rb.velocity);
+        }
     }
 
     private IEnumerator PauseAndResume()
