@@ -9,28 +9,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 069ae646abb781a41bdaa8a5ca100fdf, type: 3}
-  m_Name: Simple_Slow
+  m_Name: PerformanceTest
   m_EditorClassIdentifier: 
   timeToLive: 0
   bulletArrays:
   - bulletTags:
     - Bullet
     bulletTypeDuration: 0
-  bulletsPerArray: 20
+  bulletsPerArray: 10
   offset: {x: 0, y: 0, z: 0}
   spawnRadius: 0
   origin: 0
-  arrayBulletSpread: 5
-  arraySpread: 1
-  aimAtPlayer: 1
+  arrayBulletSpread: 324
+  arraySpread: 0
+  aimAtPlayer: 0
   straightShot: 0
-  spinSpeed: 0
+  spinSpeed: 100
   speedChange: 0
   cycles: 0
   spinReversal: 0
   timeToLerp: 0
-  maxSpinSpeed: 2.25
+  maxSpinSpeed: 100
   easeMode: 0
   direction: 0
-  fireRate: 30
-  bulletSpeed: 10
+  fireRate: 1
+  bulletSpeed: 4

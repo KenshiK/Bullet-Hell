@@ -9,7 +9,7 @@ public class Spaceship : MonoBehaviour {
     [SerializeField] private int _health;
 
     protected Collider col;
-
+    
     protected Vehicle vehicle;
     #endregion
 
@@ -37,7 +37,8 @@ public class Spaceship : MonoBehaviour {
 
     public void ApplyDamage(int damages)
     {
-        Health -= damages;
+        //commenté pour les tests de performances et collisions
+        //Health -= damages; 
     }
 
     protected void Death()

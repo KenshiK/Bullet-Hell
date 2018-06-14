@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 136246050294948482}
   - component: {fileID: 54603292245315810}
   - component: {fileID: 114397110804626530}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: NoMaterialBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,6 +112,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdf400faa2e5606449d833ca35f55da3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  acceleration: 0
+  angleAcceleration: 0
+  maxSpeed: 0
+  useMaxSpeed: 0
+  minSpeed: 0
+  useMinSpeed: 0
+  usePauseAndResume: 0
+  pauseTime: 0
+  resumeTime: 0
 --- !u!136 &136246050294948482
 CapsuleCollider:
   m_ObjectHideFlags: 1

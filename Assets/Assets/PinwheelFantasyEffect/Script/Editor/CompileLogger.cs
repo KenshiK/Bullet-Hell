@@ -26,7 +26,7 @@ namespace Pinwheel.FantasyEffect
             "Thanks for using the ${PACKAGE_NAME}, if you happy with it, please consider supporting us on <color=${LC}> ${PATREON} </color>!",
         };
 
-        [DidReloadScripts]
+        /*[DidReloadScripts]
         public static void ShowMessageOnCompileSucceeded()
         {
             ValidatePackageAndNamespace();
@@ -40,9 +40,9 @@ namespace Pinwheel.FantasyEffect
                     .Replace(WEBSITE_PLACEHOLDER, WEBSITE)
                     .Replace(PATREON_PLACEHOLDER, PATREON)
                     .Replace(LINK_COLOR_PLACEHOLDER, LINK_COLOR);
-                Debug.Log(msg);
+                //Debug.Log(msg);
             }
-        }
+        }*/
 
         private static void ValidatePackageAndNamespace()
         {

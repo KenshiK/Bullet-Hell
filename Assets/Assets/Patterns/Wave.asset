@@ -16,21 +16,24 @@ MonoBehaviour:
   - bulletTags:
     - Bullet
     bulletTypeDuration: 0
-  bulletsPerArray: 1
+  - bulletTags:
+    - Bullet
+    bulletTypeDuration: 0
+  bulletsPerArray: 2
   offset: {x: 0, y: 0, z: 0}
-  spawnRadius: 2.2
-  origin: 45
-  arrayBulletSpread: 0
-  arraySpread: 0
+  spawnRadius: 0
+  origin: 0
+  arrayBulletSpread: 180
+  arraySpread: 90
   aimAtPlayer: 0
   straightShot: 0
-  spinSpeed: 10
-  speedChange: 0
-  cycles: 1
+  spinSpeed: 100
+  speedChange: 1
+  cycles: 2
   spinReversal: 1
-  timeToLerp: 3
+  timeToLerp: 1.5
   maxSpinSpeed: 100
-  easeMode: 0
-  direction: 0
-  fireRate: 1
-  bulletSpeed: 10
+  easeMode: 2
+  direction: 1
+  fireRate: 5
+  bulletSpeed: 8.4

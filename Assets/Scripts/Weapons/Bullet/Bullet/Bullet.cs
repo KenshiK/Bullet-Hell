@@ -37,7 +37,7 @@ public class Bullet : MonoBehaviour, IPooledObject
         rb = GetComponent<Rigidbody>();
     }
 
-    private void FixedUpdate()
+    /*private void FixedUpdate()
     {
         float magn = rb.velocity.magnitude + acceleration * Time.fixedDeltaTime;
         rb.velocity = rb.velocity.normalized * magn;
@@ -53,7 +53,7 @@ public class Bullet : MonoBehaviour, IPooledObject
         {
             transform.rotation = Quaternion.LookRotation(rb.velocity);
         }
-    }
+    }*/
 
     private IEnumerator PauseAndResume()
     {
@@ -89,7 +89,8 @@ public class Bullet : MonoBehaviour, IPooledObject
             //Debug.Log("Je touche : " + other.tag);
 
             other.GetComponent<Spaceship>().ApplyDamage(damages);
-            ReturnToPool(0);
+            //Commenté pour les tests de performances
+            //ReturnToPool(0);
         }
 
     }

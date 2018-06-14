@@ -16,6 +16,8 @@ public enum Direction
 [CreateAssetMenu]
 public class BulletPattern : ScriptableObject {
 
+    private bool _changed;
+
     [Header("Global Settings")]
     public float timeToLive;
     public List<BulletArray> bulletArrays;
@@ -41,6 +43,20 @@ public class BulletPattern : ScriptableObject {
     [Header("Bullet Settings")]
     public int fireRate;
     public float bulletSpeed;
+
+#if UNITY_EDITOR
+    public bool Changed
+    {
+        get { return _changed; }
+        set { _changed = value; }
+    }
+
+
+    public void OnValidate()
+    {
+        Changed = true;
+    }
+#endif
 }
 
 [System.Serializable]
